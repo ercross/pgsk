@@ -1,0 +1,12 @@
+Forms: enable done button take user to next TextFormField
+Use this style of AppBar for shop page: https://medium.com/flutterdevs/custom-appbar-in-flutter-2be724f0051b
+On small-sized device, make homepage scrollable
+On the bottomNavBar, make selectedicon bigger and unshow its label
+set scaffold.resizeToAvoidBottomPadding on form pages
+Use flutter_secure_storage package to persist token and verify token at app startup
+When implementing the database api, ensure users can access products
+To improve speed with product search, product name, specification, description, and image url should be stored in memory. Then product should be fetched real-time to avoid disparity in price.
+Ensure that reviews can only be added by users who have bought something on the website, such users are referred to as Customers
+Allow guests check out
+Checkout this blog for more info on reducing checkout abandonment
+Open Chrome if user presses read more button on Blogscreen. Type this search query: Call other apps in flutter
