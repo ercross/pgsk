@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'bottom_nav_bar.dart';
-import 'custom_app_bar.dart';
-
 class HomePage extends StatelessWidget {
   HomePage();
+
+  static const String routeName = "homepage";
 
   @override
   Widget build(BuildContext context) {
@@ -14,23 +13,9 @@ class HomePage extends StatelessWidget {
     final double navBarHeight = mediaQuery.padding.bottom;
     final double displayAreaHeight = mediaQuery.size.height - statusBarHeight - navBarHeight - appBarHeight;
     final double appBarPreferredSize = displayAreaHeight * 0.38;
-    return Scaffold(
-      bottomNavigationBar: BottomNavBar(),
-      appBar: AppBar(
-        
-                title: Text("PGSK",),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 25.0, left: 10),
-                    child: Icon(Icons.shopping_cart),
-                  )
-                ],
-              ),
-      //endDrawer: Drawer(),
-      body: Container(
-          color: Colors.grey.withOpacity(0.2),
-          height: displayAreaHeight,
-          child: CustomAppBar(appBarPreferredSize)),
+    return Scaffold( 
+      body: Center(child: Text("status bar height: $statusBarHeight \napp bar height: $appBarHeight \n display area height: $displayAreaHeight \n width: ${mediaQuery.size.width}", style: Theme.of(context).textTheme.bodyText2))
     );
+    
   }
 }

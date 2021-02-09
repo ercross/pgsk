@@ -5,21 +5,29 @@ import '../entities/user.dart';
 ///both on in-memory data as well as on remote db
 abstract class UserAccountServicesRepository{
 
+  ///fetchUserAccount fetches the account info from PGSK server
+  Future<Map<String, dynamic>> fetchUserAccount(String userId);
+
   ///isRegisteredUser allows to customize the UI i.e., display or not to display some features if users is registered
   bool get isRegisteredUser;
 
+  ///changeUserInfo updates the existing information of this user and persists changes locally and on the server
   Future<bool> changeUserInfo (UserInfo userInfo);
 
   ///register registers a user to PGSK platform 
   ///Returns true if registration attempt is successful, false otherwise
+  ///concrete implementation must save user on localPersistenceRepository
   Future<bool> register(UserInfo user);
   
   ///signIn signs existing user into the app. 
-  ///Returns true if provided credential is correct, false otherwise
-  Future<bool> signIn({String email, String password});
+  ///Returns an authentication token if provided credential is correct or signIn is successful, null otherwise
+  ///concrete implementations must invoke localPersistenceRepository.updateAuthenticationToken to persist the token locally
+  Future<String> signIn({String email, String password});
 
   ///isAuthenticated checks if user has a valid authentication token. 
   ///Returns true if token is valid, false otherwise
+  ///concrete implementation should check return value of LocalPersistenceRepository.fetchAuthToken
+  ///null return valued indicates user is not authenticated
   Future<bool> isAuthenticated (String token);
 
   ///signOut signs out the user. 

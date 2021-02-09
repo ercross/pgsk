@@ -2,13 +2,13 @@ import 'package:equatable/equatable.dart';
 
 import '../../core/entities/user.dart';
 
-class UserModel extends Equatable {
+class UserInfoModel extends Equatable {
   final Map<String, dynamic> map;
 
-  const UserModel(this.map);
+  const UserInfoModel(this.map);
 
   ///map should be empty and ensure map is initialized before assigning it to from().
-  UserModel.from(UserInfo user, this.map) {
+  UserInfoModel.from(UserInfo user, this.map) {
     map.putIfAbsent('id', ()=> user.id);
     map.putIfAbsent('isCustomer', ()=> user.isCustomer);
     map.putIfAbsent('email', ()=> user.email);

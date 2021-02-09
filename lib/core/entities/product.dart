@@ -1,14 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-enum ProductCategory{
-  smartDevices,
-  antivirusProtection,
-  internetSecurity,
-  mobileSecurity,
-  businessSolutions,
-  homeSolutions,
-}
+import 'product_category.dart';
+import 'product_review.dart';
 
 class Product extends Equatable {
   final String id;
@@ -18,7 +12,7 @@ class Product extends Equatable {
   final String description;
   final String specification;
   final String imageUrl;
-  final String review;
+  final List<ProductReview> reviews;
   final int customersRatings;
 
   const Product({
@@ -27,14 +21,14 @@ class Product extends Equatable {
     @required this.productCategory,
     @required this.price,
     @required this.description,
-    this.review = "no reviews added yet",
+    this.reviews,
     this.customersRatings = 0,
     @required this.specification,
     @required this.imageUrl,
   });
 
   @override
-  List<Object> get props => [id, name, price, productCategory, description, specification, review, imageUrl, customersRatings];
+  List<Object> get props => [id, name, price, productCategory, description, specification, reviews, imageUrl, customersRatings];
 
   @override
     String toString() => "product name: $name" +

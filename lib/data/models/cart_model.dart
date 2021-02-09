@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:pgsk/core/entities/cart.dart';
+
+import '../../controllers/providers/cart.dart';
+
 
 class CartModel extends Equatable {
   final Map<String, dynamic> map;

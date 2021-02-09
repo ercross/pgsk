@@ -1,23 +1,29 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import 'billing_info.dart';
 import 'product.dart';
-import 'shipping_info.dart';
+
+enum OrderStatus {
+  pending,
+  cleared,
+}
 
 class Order extends Equatable {
+  final String id;
+  final DateTime date;
   final double totalAmount;
-  final List<Product> products;
-  final ShippingInfo shippingInfo;
-  final BillingInfo billingInfo;
+  final Product product;
+  final OrderStatus status;
 
   Order({
+    @required this.status,
+    @required this.id,
+    @required this.date,
     @required this.totalAmount, 
-    @required this.products, 
-    @required this.shippingInfo, 
-    @required this.billingInfo});
+    @required this.product, 
+  });
 
   @override
-  List<Object> get props => [totalAmount, products, shippingInfo, billingInfo];
+  List<Object> get props => [id, totalAmount, product];
 
 }

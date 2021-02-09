@@ -1,7 +1,9 @@
-import 'product.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../../core/entities/product.dart';
 
 ///Cart doesn't extends Equatable as Cart is implemented as a singleton
-class Cart {
+class Cart with ChangeNotifier{
   int numberOfItems;
   final List<Product> products = List<Product>();
   double total;
@@ -15,6 +17,7 @@ class Cart {
     products.add(product);
     numberOfItems += 1;
     total += product.price;
+    notifyListeners();
   }
 
   void removeProduct(Product product) {
@@ -22,6 +25,7 @@ class Cart {
       products.remove(product);
       numberOfItems -= 1;
       total -= product.price;
+      notifyListeners();
     }
   }
 

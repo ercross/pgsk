@@ -1,11 +1,9 @@
-import 'package:meta/meta.dart';
-
 import '../entities/product.dart';
+import '../entities/product_category.dart';
 
 abstract class ProductRepository{
 
   Future<List<Product>> fetchAllProducts();
 
-  ///named argument productCategory used to improve readability
-  Future<List<Product>> fetchBy({@required ProductCategory value});
+  Future<List<Product>> fetchBy(ProductCategory productCategory);
 }

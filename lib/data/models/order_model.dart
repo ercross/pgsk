@@ -10,17 +10,19 @@ class OrderModel extends Equatable {
   //TODO: extract shipping and billing info fields once shippingInfo class has been implemented
   ///map should be empty and ensure map is initialized before assigning it to from().
   OrderModel.from(Order order, this.map) {
+    map.putIfAbsent('date', () => order.date);
+    map.putIfAbsent('id', () => order.id);
     map.putIfAbsent('totalAmount', ()=> order.totalAmount);
-    map.putIfAbsent('products', ()=> order.products);
-    map.putIfAbsent('shippingInfo', () => order.shippingInfo);
-    map.putIfAbsent('billingInfo', () => order.billingInfo);
+    map.putIfAbsent('product', ()=> order.product);
+    map.putIfAbsent('status', () => order.status);
   }
 
   Order toOrder() => Order(
+    status: map['status'],
+    date: map['date'],
+    id: map['id'],
     totalAmount: map['totalAmount'],
-    products: map['products'],
-    shippingInfo: map['shippingInfo'],
-    billingInfo: map['billingInfo']
+    product: map['product'],
   );
 
   @override

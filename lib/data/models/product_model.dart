@@ -18,7 +18,7 @@ class ProductModel extends Equatable {
     map.putIfAbsent("description", ()=>product.description);
     map.putIfAbsent("specification", ()=>product.specification);
     map.putIfAbsent("imageUrl", ()=>product.imageUrl);
-    map.putIfAbsent("review", ()=>product.review);
+    map.putIfAbsent("reviews", ()=>product.reviews);
     map.putIfAbsent("customersRatings", ()=>product.customersRatings);
   }
 
@@ -29,7 +29,7 @@ class ProductModel extends Equatable {
     price: map['price'],
     description: map['description'],
     specification: map['specification'],
-    review: map['review'],
+    reviews: map['reviews'],
     imageUrl: map['imageUrl'],
     customersRatings: map['customersRatings']
   );

@@ -21,32 +21,47 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_secure_storage: ^3.3.5
+
+  #flutter_secure_storage stores data in SharedPreferences but with encryption in android. 
+  #So it can store data that sharedPreferences can store
+  flutter_secure_storage: ^3.3.5 
   equatable: ^1.2.5
   http: ^0.12.2
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  # cupertino_icons: ^1.0.0 todo clear out if not building for iOS
+  flutter_bloc: ^6.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.8.1
+  flutter_native_splash: ^0.2.10
 
 flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/product1.png
+    - assets/images/splash_screen_background.png
+    - assets/images/launch_icon.png
 
   fonts:
-    - family: BigShouldersDisplay
-      fonts: 
-        - asset: assets/fonts/BigShouldersDisplay-Regular.ttf
-        
-    - family: BlackHanSans
+    - family: Montserrat
       fonts:
-        - asset: assets/fonts/BlackHanSans-Regular.ttf
+        - asset: assets/fonts/Montserrat-Black.ttf
+        - asset: assets/fonts/Montserrat-BlackItalic.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/Montserrat-BoldItalic.ttf
+        - asset: assets/fonts/Montserrat-ExtraBold.ttf
+        - asset: assets/fonts/Montserrat-ExtraBoldItalic.ttf
+        - asset: assets/fonts/Montserrat-ExtraLight.ttf
+        - asset: assets/fonts/Montserrat-ExtraLightItalic.ttf
+        - asset: assets/fonts/Montserrat-Italic.ttf
+        - asset: assets/fonts/Montserrat-Light.ttf
+        - asset: assets/fonts/Montserrat-LightItalic.ttf
+        - asset: assets/fonts/Montserrat-Medium.ttf
+        - asset: assets/fonts/Montserrat-MediumItalic.ttf
+        - asset: assets/fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-SemiBold.ttf
+        - asset: assets/fonts/Montserrat-SemiBoldItalic.ttf
+        - asset: assets/fonts/Montserrat-Thin.ttf
+        - asset: assets/fonts/Montserrat-ThinItalic.ttf
           weight: 700
           

@@ -10,3 +10,6 @@ Ensure that reviews can only be added by users who have bought something on the 
 Allow guests check out
 Checkout this blog for more info on reducing checkout abandonment
 Open Chrome if user presses read more button on Blogscreen. Type this search query: Call other apps in flutter
+Fetch userInfo from remote database and store only in-memory
+Invoke AccountFactory.createUserAccount() while initializing the app
+Remove unused fonts to reduce app size

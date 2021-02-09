@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 class UserInfo extends Equatable {
+
+  ///id is provided by PGSK web server after registration attempt
   final String id;
   final String email;
   final String firstName;

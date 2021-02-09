@@ -1,3 +1,3 @@
 The architecture is chosen in such a way that each folder would not import from grandparent folders. This way, code in each folder is almost self-independent
-Flutter_secure_storage package was used to securely save authentication token, as well as other sensitive info. Flutter_secure_storage is similar to SharedPreferences, only that it stores value securely
+Flutter_secure_storage package was used to securely save authentication token, as well as other sensitive info. Flutter_secure_storage uses SharedPreferences, only that it stores values with an encryption provided by 
 Payment processor to be used, Stripe
