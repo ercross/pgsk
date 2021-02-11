@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
+import 'views/screens/authentication_screen/authentication_page.dart';
 import 'views/screens/home_screen/homepage.dart';
+import 'views/screens/onboarding_screen/onboarding_page.dart';
 import 'views/screens/secondary_splash_screen.dart';
+import 'views/widgets/on_page_loading_spinner.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent, ));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   runApp(PGSK());
 }
 
@@ -19,10 +24,15 @@ class PGSK extends StatelessWidget {
     return MaterialApp(
       title: 'PGSK',
       theme: cookTheme(),
-      home: SecondarySplashScreen(),
+      home: GestureDetector(
+      onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
+      child: SafeArea(child: AuthenticationPage())),
       routes: {
+        OnpageLoadingSpinner.routeName: (ctx) => OnpageLoadingSpinner(),
         HomePage.routeName: (ctx) => HomePage(),
         SecondarySplashScreen.routeName: (ctx) => SecondarySplashScreen(),
+        OnboardingPage.routeName: (ctx) => OnboardingPage(),
+        AuthenticationPage.routeName: (ctx) =>  AuthenticationPage(),
       },
     );
   }
@@ -40,6 +50,13 @@ class PGSK extends StatelessWidget {
     const Color white = Colors.white;
 
     TextTheme textTheme = ThemeData.light().textTheme.copyWith(
+      //used for onboarding page product range topics
+        headline4: TextStyle(
+          color: accentColor,
+          fontFamily: primaryFont,
+          fontSize: 20,
+          fontWeight: FontWeight.w600
+        ),
         headline5: TextStyle(
           color: white,
           fontFamily: primaryFont,
@@ -51,14 +68,15 @@ class PGSK extends StatelessWidget {
           fontWeight: FontWeight.w700
         ),
         bodyText2: TextStyle(
-          color: primaryColorGradient2,
+          color: white,
+          fontSize: 12,
           fontFamily: primaryFont,
-          fontWeight: FontWeight.w400
+          fontWeight: FontWeight.w600
         ),
         bodyText1: TextStyle(
           color: white,
           fontFamily: primaryFont,
-          fontWeight: FontWeight.w700
+          fontWeight: FontWeight.w600
         ),
         subtitle2: TextStyle(
           color: grey,
@@ -70,6 +88,13 @@ class PGSK extends StatelessWidget {
           fontFamily: primaryFont,
           fontWeight: FontWeight.w300
         ),
+        //used for authentication page OvalShapedTextField.FieldFor
+        caption: TextStyle(
+          color: black,
+          fontFamily: primaryFont,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+        ),
         button: TextStyle(
           color: primaryColorGradient1,
           fontFamily: primaryFont,
@@ -77,13 +102,15 @@ class PGSK extends StatelessWidget {
         ),
       );
 
+    final TabBarTheme tabBarTheme = TabBarTheme(indicatorSize: TabBarIndicatorSize.tab);
+
     return ThemeData(
       primaryColor: primaryColorGradient1,
       accentColor: accentColor,
       splashColor: primaryColorGradient2,
       primaryColorLight: primaryColorGradient2,
-      textTheme: textTheme,
-
+      textTheme: textTheme,      
+      tabBarTheme: tabBarTheme,
     );
   }
 }

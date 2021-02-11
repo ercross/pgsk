@@ -13,3 +13,4 @@ Open Chrome if user presses read more button on Blogscreen. Type this search que
 Fetch userInfo from remote database and store only in-memory
 Invoke AccountFactory.createUserAccount() while initializing the app
 Remove unused fonts to reduce app size
+Make status bar transparent on onboarding page
