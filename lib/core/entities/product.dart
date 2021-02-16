@@ -7,7 +7,7 @@ import 'product_review.dart';
 class Product extends Equatable {
   final String id;
   final String name;
-  final ProductCategory productCategory;
+  final ProductCategory category;
   final double price;
   final String description;
   final String specification;
@@ -18,7 +18,7 @@ class Product extends Equatable {
   const Product({
     @required this.id,
     @required this.name,
-    @required this.productCategory,
+    @required this.category,
     @required this.price,
     @required this.description,
     this.reviews,
@@ -28,10 +28,10 @@ class Product extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, name, price, productCategory, description, specification, reviews, imageUrl, customersRatings];
+  List<Object> get props => [id, name, price, category, description, specification, reviews, imageUrl, customersRatings];
 
   @override
     String toString() => "product name: $name" +
-                            "\nid: $id \ncategory: ${productCategory.toString().split(".").last}" + 
+                            "\nid: $id \ncategory: ${category.toString().split(".").last}" + 
                             "\nprice: $price \ndescription: $description \nspecification: $specification, ";
 }

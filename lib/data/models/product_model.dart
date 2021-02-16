@@ -14,7 +14,7 @@ class ProductModel extends Equatable {
     map.putIfAbsent("id", ()=>product.id);
     map.putIfAbsent("name", ()=>product.name);
     map.putIfAbsent("price", ()=>product.price);
-    map.putIfAbsent("category", ()=>product.productCategory);
+    map.putIfAbsent("category", ()=>product.category);
     map.putIfAbsent("description", ()=>product.description);
     map.putIfAbsent("specification", ()=>product.specification);
     map.putIfAbsent("imageUrl", ()=>product.imageUrl);
@@ -23,7 +23,7 @@ class ProductModel extends Equatable {
   }
 
   Product toProduct() => Product(
-    productCategory: map["category"],
+    category: map["category"],
     id: map['id'],
     name: map['name'],
     price: map['price'],

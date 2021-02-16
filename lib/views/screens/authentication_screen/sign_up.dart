@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/gradient_colored_long_action_button.dart';
 
 import '../../../controllers/providers/authentication_tab_index.dart';
 import '../../widgets/oval_shaped_text_input.dart';
@@ -58,7 +59,10 @@ class _SignUpTabState extends State<SignUpTab> {
     return Column(
       children: [
         _buildFlatNavButton(),
-        _buildSignUpButton(),
+        GradientColoredLongActionButton(
+          text: "SIGN UP",
+          onPressed: (){},
+        ),
         _buildAgreementWarning()
       ],
     );
@@ -96,27 +100,6 @@ class _SignUpTabState extends State<SignUpTab> {
                  ),
                );
   }
-
-  Widget _buildSignUpButton() => Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(top: 20, bottom: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).primaryColorLight,
-            Theme.of(context).primaryColor
-          ]
-        )
-      ),
-      child: Center(
-        child: FlatButton(
-          child: Text("SIGN UP"),
-          onPressed: (){},
-      ))
-    );
 
   @override
   Widget build(BuildContext context) {

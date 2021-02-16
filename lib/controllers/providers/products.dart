@@ -30,7 +30,7 @@ class Products with ChangeNotifier {
 
     if (allProducts.isNotEmpty) {
       allProducts.forEach((product) {
-        if (product.productCategory.name.toLowerCase().compareTo(productCategory.name.toLowerCase()) == 0) {
+        if (product.category.name.toLowerCase().compareTo(productCategory.name.toLowerCase()) == 0) {
           productByCategory.add(product);
         }
       });

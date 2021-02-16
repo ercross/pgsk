@@ -25,10 +25,10 @@ class AuthenticationTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     final double pageHeight = MediaQuery.of(context).size.height;
     final double pageWidth = MediaQuery.of(context).size.width;
-    final double toolbarHeight = pageHeight * 0.3;
+    final double toolbarHeight = pageHeight * 0.15;
 
     ///tabViewHeight is the height of the container within which sign-in and sign-up pages are rendered
-    final double tabViewHeight = pageHeight * 0.7;
+    final double tabViewHeight = pageHeight * 0.85;
     final double tabViewWidth = pageWidth;
 
     final AuthenticationTabIndex indexProvider = Provider.of<AuthenticationTabIndex>(context);

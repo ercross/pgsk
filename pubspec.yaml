@@ -21,13 +21,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  #flutter_secure_storage stores data in SharedPreferences but with encryption in android. 
-  #So it can store data that sharedPreferences can store
-  flutter_secure_storage: ^3.3.5 
   equatable: ^1.2.5
   http: ^0.12.2
   flutter_bloc: ^6.1.0
+  provider: ^4.3.3
+  #flutter_secure_storage stores data in SharedPreferences but with encryption in android. 
+  #So it can store data that sharedPreferences can store
+  flutter_secure_storage: ^3.3.5 
 
 dev_dependencies:
   flutter_test:

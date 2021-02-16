@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:pgsk/controllers/providers/bottom_nav_bar_active_icon.dart';
+import 'package:provider/provider.dart';
 
 import 'views/screens/authentication_screen/authentication_page.dart';
+import 'views/screens/getting_started_screen/getting_started_screen.dart';
 import 'views/screens/home_screen/homepage.dart';
 import 'views/screens/onboarding_screen/onboarding_page.dart';
 import 'views/screens/secondary_splash_screen.dart';
@@ -18,6 +20,14 @@ void main() {
 class PGSK extends StatelessWidget {
   static const String primaryFont = 'Montserrat';
 
+  static const TextStyle homepageTexts = TextStyle(
+          color: Colors.black,
+          fontFamily: primaryFont,
+          fontWeight: FontWeight.w800,
+          fontSize: 14,
+          wordSpacing: 0.5,
+  );
+
   @override
   Widget build(BuildContext context) {
     
@@ -26,8 +36,11 @@ class PGSK extends StatelessWidget {
       theme: cookTheme(),
       home: GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-      child: SafeArea(child: AuthenticationPage())),
+        child: ChangeNotifierProvider<BottomNavBarActiveIcon>(
+          create: (ctx) => BottomNavBarActiveIcon(),
+          child: SafeArea(child: HomePage()))),
       routes: {
+        GettingStartedPage.routeName: (ctx) => GettingStartedPage(),
         OnpageLoadingSpinner.routeName: (ctx) => OnpageLoadingSpinner(),
         HomePage.routeName: (ctx) => HomePage(),
         SecondarySplashScreen.routeName: (ctx) => SecondarySplashScreen(),
@@ -63,9 +76,9 @@ class PGSK extends StatelessWidget {
           fontWeight: FontWeight.w900
         ),
         headline6: TextStyle(
-          color: black,
+          color: white,
           fontFamily: primaryFont,
-          fontWeight: FontWeight.w700
+          fontWeight: FontWeight.w600
         ),
         bodyText2: TextStyle(
           color: white,
@@ -81,7 +94,7 @@ class PGSK extends StatelessWidget {
         subtitle2: TextStyle(
           color: grey,
           fontFamily: primaryFont,
-          fontWeight: FontWeight.w500
+          fontWeight: FontWeight.w800
         ),
         subtitle1: TextStyle(
           color: black,
@@ -92,17 +105,23 @@ class PGSK extends StatelessWidget {
         caption: TextStyle(
           color: black,
           fontFamily: primaryFont,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
           fontSize: 12,
         ),
         button: TextStyle(
           color: primaryColorGradient1,
           fontFamily: primaryFont,
-          fontWeight: FontWeight.w500
+          fontWeight: FontWeight.w500,
         ),
       );
 
     final TabBarTheme tabBarTheme = TabBarTheme(indicatorSize: TabBarIndicatorSize.tab);
+
+    final AppBarTheme appBarTheme = AppBarTheme(
+      elevation: 0,
+      iconTheme: IconThemeData(color: black, size: 22),
+      color: Colors.transparent,
+    );
 
     return ThemeData(
       primaryColor: primaryColorGradient1,
@@ -111,6 +130,7 @@ class PGSK extends StatelessWidget {
       primaryColorLight: primaryColorGradient2,
       textTheme: textTheme,      
       tabBarTheme: tabBarTheme,
+      appBarTheme: appBarTheme
     );
   }
 }

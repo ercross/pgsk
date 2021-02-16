@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:pgsk/views/widgets/gradient_colored_long_action_button.dart';
 import '../../../controllers/providers/authentication_tab_index.dart';
 import '../../widgets/oval_shaped_text_input.dart';
 
@@ -39,27 +40,6 @@ class _SignInTabState extends State<SignInTab> {
 
   @override
   Widget build(BuildContext context) {
-
-    final Widget _signInButton = Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(top: 20, bottom: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).primaryColorLight,
-            Theme.of(context).primaryColor
-          ]
-        )
-      ),
-      child: Center(
-        child: FlatButton(
-          child: Text("SIGN IN", style: Theme.of(context).textTheme.bodyText1),
-          onPressed: _onSignInButtonPressed,
-      ))
-    );
 
     final Widget forgotPasswordButton = FlatButton(
       child: Text("Forget Password", style: Theme.of(context).textTheme.caption),
@@ -110,7 +90,10 @@ class _SignInTabState extends State<SignInTab> {
 
     final Widget _lowerButtons = Column(
              children: [
-               _signInButton,
+               GradientColoredLongActionButton(
+                 text: "SIGN IN",
+                 onPressed: _onSignInButtonPressed,
+               ),
                _flatNavButtons              
              ],);
 

@@ -14,3 +14,4 @@ Fetch userInfo from remote database and store only in-memory
 Invoke AccountFactory.createUserAccount() while initializing the app
 Remove unused fonts to reduce app size
 Make status bar transparent on onboarding page
+Prefer to use const for variables inside build method rather than final keyword so that flutter could reuse widgets 

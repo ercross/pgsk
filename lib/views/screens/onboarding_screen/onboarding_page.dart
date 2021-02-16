@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgsk/views/screens/getting_started_screen/getting_started_screen.dart';
 
 import '../authentication_screen/authentication_page.dart';
 
@@ -142,7 +143,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FlatButton(
-          onPressed: () => Navigator.of(context).pushReplacementNamed(AuthenticationPage.routeName),
+          onPressed: () => Navigator.of(context).pushReplacementNamed(GettingStartedPage.routeName),
           child: Text("Skip", style: Theme.of(context).textTheme.bodyText2),),
         Expanded(child: Container()),
         ButtonBar(
