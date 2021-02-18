@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pgsk/controllers/providers/bottom_nav_bar_active_icon.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/providers/bottom_nav_bar_active_icon.dart';
 import 'views/screens/authentication_screen/authentication_page.dart';
+import 'views/screens/category_screen/category_screen.dart';
 import 'views/screens/getting_started_screen/getting_started_screen.dart';
 import 'views/screens/home_screen/homepage.dart';
 import 'views/screens/onboarding_screen/onboarding_page.dart';
+import 'views/screens/search_screen/search_screen.dart';
 import 'views/screens/secondary_splash_screen.dart';
+import 'views/screens/explore_screen/explore_screen.dart';
+import 'views/screens/user_account_screen/user_account_screen.dart';
 import 'views/widgets/on_page_loading_spinner.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-  runApp(PGSK());
+  runApp(
+    ChangeNotifierProvider<BottomNavBarActiveIcon>(
+        create: (ctx) => BottomNavBarActiveIcon(),
+        child: PGSK()));
 }
 
 class PGSK extends StatelessWidget {
   static const String primaryFont = 'Montserrat';
+  static const String currency = "\$";
 
   static const TextStyle homepageTexts = TextStyle(
           color: Colors.black,
@@ -35,11 +43,14 @@ class PGSK extends StatelessWidget {
       title: 'PGSK',
       theme: cookTheme(),
       home: GestureDetector(
-      onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-        child: ChangeNotifierProvider<BottomNavBarActiveIcon>(
-          create: (ctx) => BottomNavBarActiveIcon(),
-          child: SafeArea(child: HomePage()))),
+        onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
+        child: SafeArea(child: ExplorePage()),
+      ),
       routes: {
+        UserAccountPage.routeName: (ctx) => UserAccountPage(),
+        SearchPage.routeName: (ctx) => SearchPage(),
+        ExplorePage.routeName: (ctx) => ExplorePage(),
+        CategoryPage.routeName: (ctx) => CategoryPage(),
         GettingStartedPage.routeName: (ctx) => GettingStartedPage(),
         OnpageLoadingSpinner.routeName: (ctx) => OnpageLoadingSpinner(),
         HomePage.routeName: (ctx) => HomePage(),
@@ -51,7 +62,7 @@ class PGSK extends StatelessWidget {
   }
   
   ///cookTheme prepares PGSK theme
-  ///This method was prepared to avoid the problem described here.
+  ///This method was prepared to avoid the problem described below.
   ///The context passed in PGSK().build(context) contains Flutter default theme
   ///This method was extracted out to override this by avoid call to Theme.of(context) in the method
   ThemeData cookTheme() {
@@ -105,7 +116,7 @@ class PGSK extends StatelessWidget {
         caption: TextStyle(
           color: black,
           fontFamily: primaryFont,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
           fontSize: 12,
         ),
         button: TextStyle(

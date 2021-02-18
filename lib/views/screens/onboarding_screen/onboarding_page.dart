@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pgsk/views/screens/getting_started_screen/getting_started_screen.dart';
+import 'package:pgsk/views/screens/home_screen/homepage.dart';
 
 import '../authentication_screen/authentication_page.dart';
 
@@ -162,7 +163,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onPressed: (){
                 setState((){
                   if (_currentImage != 3) _currentImage++;
-                  else _currentImage = 0;
+                  else Navigator.of(context).pushReplacementNamed(HomePage.routeName);
                 });
               },)
           ],

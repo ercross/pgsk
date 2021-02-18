@@ -8,7 +8,6 @@ class AuthenticationTabIndex with ChangeNotifier {
 
   void changeIndex(int newValue) {
     if (!(newValue > 1) || !(newValue < 0)) value = newValue;
-    print("Help me ooo. Dem don dey finger me");
     notifyListeners();
   }
 }

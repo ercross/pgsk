@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/providers/bottom_nav_bar_active_icon.dart';
+import '../category_screen/category_screen.dart';
+import '../search_screen/search_screen.dart';
+import '../explore_screen/explore_screen.dart';
+import '../user_account_screen/user_account_screen.dart';
+import 'homepage.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final double maxWidth;
-  const CustomBottomNavBar(this.maxWidth);
+  final BuildContext currentPageContext;
+  const CustomBottomNavBar(this.maxWidth, this.currentPageContext);
 
   Widget _buildNavBarItem({
     @required IconData icon,
@@ -72,7 +78,10 @@ class CustomBottomNavBar extends StatelessWidget {
                   _buildNavBarItem(
                     label: "Home",
                     context: context,
-                    onPressed: () => activeIcon.changeValue(0),
+                    onPressed: () {
+                      activeIcon.changeValue(0);
+                      Navigator.of(currentPageContext).pushReplacementNamed(HomePage.routeName);
+                    } ,
                     icon: Icons.home,
                     isActive: activeIcon.value == 0,
                   ),
@@ -80,28 +89,40 @@ class CustomBottomNavBar extends StatelessWidget {
                     label: "Category",
                     icon: Icons.category,
                     context: context,
-                    onPressed: () => activeIcon.changeValue(1),
+                    onPressed: () {
+                      activeIcon.changeValue(1);
+                      Navigator.of(currentPageContext).pushReplacementNamed(CategoryPage.routeName);
+                    },
                     isActive: activeIcon.value == 1,
                   ),
                   _buildNavBarItem(
                     label: "Explore",
                     icon: Icons.radio_button_checked_rounded,
                     context: context,
-                    onPressed: () => activeIcon.changeValue(2),
+                    onPressed: () {
+                      activeIcon.changeValue(2);
+                      Navigator.of(currentPageContext).pushReplacementNamed(ExplorePage.routeName);
+                    },
                     isActive: activeIcon.value == 2,
                   ),
                   _buildNavBarItem(
                     label: "Search",
                     icon: Icons.search,
                     context: context,
-                    onPressed: () => activeIcon.changeValue(3),
+                    onPressed: () {
+                      activeIcon.changeValue(3);
+                      Navigator.of(currentPageContext).pushReplacementNamed(SearchPage.routeName);
+                    },
                     isActive: activeIcon.value == 3,
                   ),
                   _buildNavBarItem(
                     label: "Account",
                     icon: Icons.person_pin,
                     context: context,
-                    onPressed: () => activeIcon.changeValue(4),
+                    onPressed: () {
+                      activeIcon.changeValue(4);
+                      Navigator.of(currentPageContext).pushReplacementNamed(UserAccountPage.routeName);
+                    },
                     isActive: activeIcon.value == 4,
                   )
                 ],

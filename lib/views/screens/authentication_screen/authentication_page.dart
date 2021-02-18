@@ -17,10 +17,15 @@ class AuthenticationPage extends StatelessWidget {
     );
 }
 
-class AuthenticationTabs extends StatelessWidget {
+class AuthenticationTabs extends StatefulWidget {
 
   const AuthenticationTabs();
 
+  @override
+  _AuthenticationTabsState createState() => _AuthenticationTabsState();
+}
+
+class _AuthenticationTabsState extends State<AuthenticationTabs> {
   @override
   Widget build(BuildContext context) {
     final double pageHeight = MediaQuery.of(context).size.height;
@@ -34,7 +39,7 @@ class AuthenticationTabs extends StatelessWidget {
     final AuthenticationTabIndex indexProvider = Provider.of<AuthenticationTabIndex>(context);
 
     return DefaultTabController(
-        initialIndex: 1,
+        initialIndex: indexProvider.value,
         length: 2,
         child: Scaffold(
           appBar: AppBar(

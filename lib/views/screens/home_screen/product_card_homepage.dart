@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:pgsk/views/widgets/gradient_colored_long_action_button.dart';
-import '../screens/home_screen/homepage.dart';
 
-import '../../core/entities/product.dart';
+import '../../../core/entities/product.dart';
+import '../../widgets/gradient_colored_long_action_button.dart';
+import 'homepage.dart';
 
-class HomePageProductCard extends StatelessWidget {
+
+class ProductCardHomePage extends StatelessWidget {
   final BoxConstraints size;
   final Product product;
+  final String buttonActionWord;
 
-  const HomePageProductCard({@required this.product, @required this.size});
+  const ProductCardHomePage({
+    @required this.product, 
+    @required this.size, 
+    this.buttonActionWord = "SHOP"
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +62,7 @@ class HomePageProductCard extends StatelessWidget {
               child: SizedBox(),
             ),
             GradientColoredLongActionButton(
-                text: "SHOP",
+                text: buttonActionWord,
                 onPressed: () {},
                 width: size.maxWidth * 0.21,
                 height: size.maxHeight * 0.034)

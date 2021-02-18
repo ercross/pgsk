@@ -7,7 +7,7 @@ import '../../widgets/oval_shaped_text_input.dart';
 import '../home_screen/homepage.dart';
 import '../../widgets/on_page_loading_spinner.dart';
 
-class SignInTab extends StatefulWidget {
+class SignInTab extends StatelessWidget {
   final double viewportHeight;
   final double viewportWidth;
   final AuthenticationTabIndex tabIndexProvider;
@@ -15,31 +15,28 @@ class SignInTab extends StatefulWidget {
   SignInTab({
     @required this.viewportHeight, 
     @required this.viewportWidth, 
-    @required this.tabIndexProvider}) ;
+    @required this.tabIndexProvider});
 
-  @override
-  _SignInTabState createState() => _SignInTabState();
-}
-
-class _SignInTabState extends State<SignInTab> {
+  static BuildContext ctx;
 
   void _onSignInButtonPressed() async {
     final ConnectivityResult cR = await Connectivity().checkConnectivity();
     if(cR == ConnectivityResult.mobile || cR == ConnectivityResult.wifi) {
       //TODO: send packet and replace Future.delayed with actual network response data
-      Future.delayed(Duration(seconds: 5), () => Navigator.of(context).pushNamed(OnpageLoadingSpinner.routeName));
-      Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+      Future.delayed(Duration(seconds: 5), () => Navigator.of(ctx).pushNamed(OnpageLoadingSpinner.routeName));
+      Navigator.of(ctx).pushReplacementNamed(HomePage.routeName);
     }
-    else Scaffold.of(context).showSnackBar(SnackBar(
+    else Scaffold.of(ctx).showSnackBar(SnackBar(
       content: Text("No Internet Connection", 
         textAlign: TextAlign.center, 
-        style: Theme.of(context).textTheme.button.copyWith(color: Colors.white)),
-      backgroundColor: Theme.of(context).primaryColorLight.withOpacity(0.3),
+        style: Theme.of(ctx).textTheme.button.copyWith(color: Colors.white)),
+      backgroundColor: Theme.of(ctx).primaryColorLight.withOpacity(0.3),
     ));
   }
 
   @override
   Widget build(BuildContext context) {
+    ctx = context;
 
     final Widget forgotPasswordButton = FlatButton(
       child: Text("Forget Password", style: Theme.of(context).textTheme.caption),
@@ -54,7 +51,7 @@ class _SignInTabState extends State<SignInTab> {
     final Widget _signUpButton = FlatButton(
       child: Text("Sign Up", 
         style: Theme.of(context).textTheme.caption.copyWith(fontWeight: FontWeight.w700, color: Theme.of(context).accentColor)),
-      onPressed: () => widget.tabIndexProvider.changeIndex(1),
+      onPressed: () => tabIndexProvider.changeIndex(1),
     );
 
     ///flatNavButtons is the row showing forgot password and Signup flat buttons
@@ -99,8 +96,8 @@ class _SignInTabState extends State<SignInTab> {
 
     return Center(
       child: Container(
-        height: widget.viewportHeight * 0.8,
-        width: widget.viewportWidth * 0.8,
+        height: viewportHeight * 0.8,
+        width: viewportWidth * 0.8,
         padding: EdgeInsets.only(bottom: 20),
         child: ListView(
           children: [

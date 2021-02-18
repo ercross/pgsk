@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../core/entities/product_category.dart';
-import '../../../core/entities/product.dart';
-import 'custom_app_bar.dart';
-import '../../widgets/homepage_product_card.dart';
 
+import '../../../core/entities/product.dart';
+import '../../../core/entities/product_category.dart';
 import '../../../main.dart';
+import 'custom_app_bar.dart';
 import 'custom_nav_bar.dart';
+import 'product_card_homepage.dart';
 
 class HomePage extends StatelessWidget {
   HomePage();
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
       height: size.maxHeight * 0.33,
       width: size.maxWidth * screenWidthMultiplier,
       child: ListView(
-            children: products.map<HomePageProductCard>((product) => HomePageProductCard(
+            children: products.map<ProductCardHomePage>((product) => ProductCardHomePage(
               product: product,
               size: size,)).toList(),
           ),
@@ -188,10 +188,9 @@ class HomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(height: constraints.maxHeight * 0.065),
-                CustomAppBar(constraints.maxWidth),
+                CustomAppBar(size: constraints, title: "Discover", trailing: Icon(Icons.shopping_cart)),
                 Expanded(child: _buildMiddleContent(ctx: ctx, size: constraints)),
-                CustomBottomNavBar(constraints.maxWidth),
+                CustomBottomNavBar(constraints.maxWidth, context),
               ],
             )
           );
