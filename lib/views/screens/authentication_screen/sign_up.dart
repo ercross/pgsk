@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgsk/views/screens/home_screen/homepage.dart';
 import '../../widgets/gradient_colored_long_action_button.dart';
 
 import '../../../controllers/providers/authentication_tab_index.dart';
@@ -57,7 +58,9 @@ class SignUpTab extends StatelessWidget {
         _buildFlatNavButton(),
         GradientColoredLongActionButton(
           text: "SIGN UP",
-          onPressed: (){},
+          onPressed: (){
+            Navigator.of(ctx).pushReplacementNamed(HomePage.routeName);
+          },
         ),
         _buildAgreementWarning()
       ],
@@ -69,7 +72,7 @@ class SignUpTab extends StatelessWidget {
       children: [
         Text("By signing up, you agree with our", textAlign: TextAlign.center, style: Theme.of(ctx).textTheme.caption.copyWith(fontWeight: FontWeight.w400)),
         FlatButton(
-          child: Text("Terms & Conditions", style: Theme.of(ctx).textTheme.button.copyWith(decoration: TextDecoration.underline),),
+          child: Text("Terms & Conditions", style: Theme.of(ctx).textTheme.button.copyWith(decoration: TextDecoration.underline, fontSize: 11),),
           onPressed: () {
             //TODO: navigate to Terms and Conditions page
           },

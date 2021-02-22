@@ -139,7 +139,8 @@ class UserAccountPage extends StatelessWidget {
             .map<ProductCardHomePage>((product) => ProductCardHomePage(
                   buttonActionWord: "BUY",
                   product: product,
-                  size: size,
+                  width: size.maxWidth,
+                  height: size.maxHeight
                 ))
             .toList()
       ],

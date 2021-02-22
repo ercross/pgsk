@@ -3,11 +3,11 @@ import 'package:pgsk/views/screens/home_screen/homepage.dart';
 import '../../../core/entities/product.dart';
 
 class ProductCardCategoryPage extends StatelessWidget {
-  final BoxConstraints size;
+  final double width;
   final Product product;
 
   const ProductCardCategoryPage({
-    @required this.size,
+    @required this.width,
     @required this.product
   });
 
@@ -15,8 +15,7 @@ class ProductCardCategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       //the 0.2 accounts for the horizontal padding and margin
-      width: (size.maxWidth * HomePage.screenWidthMultiplier) / 2.2,
-      //height: size.maxHeight * 0.27,
+      width: (width * HomePage.screenWidthMultiplier) / 2.2,
       padding: EdgeInsets.all(8),
       color: Colors.white,
       child: Column(

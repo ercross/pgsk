@@ -1,54 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:pgsk/views/screens/explore_screen/cart_screen/cart_screen.dart';
+import 'package:pgsk/views/screens/explore_screen/wishlist_screen.dart';
 
-import '../../../controllers/providers/explore_page_info.dart';
-import '../../../main.dart';
-import '../cart_screen/cart_screen.dart';
-import '../home_screen/custom_app_bar.dart';
 import '../home_screen/custom_nav_bar.dart';
+import 'orders_screen.dart';
 
-class ExplorePage extends StatelessWidget {
-  static const String routeName = "/smart-devices";
+class ExplorePage extends StatefulWidget {
+  static const String routeName = "/explore-screen";
+  static BuildContext ctx;
 
   const ExplorePage();
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ExplorePageInfo> (
-      create: (_) => ExplorePageInfo(),
-      child: ExplorePageTabs()
-    );
-  }
+  _ExplorePageState createState() => _ExplorePageState();
 }
 
-class ExplorePageTabs extends StatelessWidget {
+class _ExplorePageState extends State<ExplorePage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
 
-  static BuildContext ctx;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(initialIndex: 1, vsync: this, length: 3);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    ctx = context;
+
+    ExplorePage.ctx = context;
     return Scaffold(
       body: LayoutBuilder(
-        builder: (ctx, constraints) {
+        builder: (_, constraint) {
           return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CustomAppBar(
-                size: constraints, 
-                title: null, 
-                leading: Center(
-                  child: Text("Cart", textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline4.copyWith(
-                        color: Colors.black, fontWeight: FontWeight.w700, fontSize: 19))
-                ),
-                trailing: Icon(Icons.edit_attributes_outlined, color: Colors.white)),
-              SizedBox(height: 10,),
-              Expanded(child: CartPage(constraints)),
-              CustomBottomNavBar(constraints.maxWidth, context),
-            ],
-          );
+          children: [
+            SizedBox(
+              width: constraint.maxWidth,
+              height: constraint.maxHeight * 0.12,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: TabBar(
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicatorPadding: EdgeInsets.all(8),
+                    indicatorColor: Colors.grey,
+                    indicatorWeight: 3,
+                    labelColor: Theme.of(context).primaryColor,
+                    unselectedLabelColor: Colors.black,
+                    controller: _tabController,
+                    tabs: [
+                      Tab(child: Text("Wishlist")),
+                      Tab(child: Text("Cart")),
+                      Tab(child: Text("Orders")),
+                    ],
+                  ),
+                )),
+            Expanded(
+              child: TabBarView(
+              
+              controller: _tabController,
+              children: [
+                WishlistPage(constraint), 
+                CartPage(constraint), 
+                OrdersPage(constraint)],
+            ),
+            ),
+            CustomBottomNavBar(constraint.maxWidth, context),
+          ],
+        );
         },
-      )
+      ),
     );
   }
 }
+

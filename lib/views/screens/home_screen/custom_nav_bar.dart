@@ -41,7 +41,7 @@ class CustomBottomNavBar extends StatelessWidget {
             ),
           ))
         : Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Icon(icon),
@@ -67,8 +67,8 @@ class CustomBottomNavBar extends StatelessWidget {
     );
 
     final Widget _navBarIcons = Positioned(
-              left: maxWidth * 0.075, //enables the icons placed at the center
-              width: maxWidth * 0.85,
+              left: maxWidth * 0.05, //enables the icons placed at the center
+              width: maxWidth * 0.90,
               bottom: 10,
               child: Row(
                 mainAxisSize: MainAxisSize.min,

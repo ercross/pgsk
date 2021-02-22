@@ -1,13 +1,12 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:pgsk/views/screens/cart_screen/product_card_cart_screen.dart';
-import 'package:pgsk/views/screens/home_screen/homepage.dart';
-import 'package:pgsk/views/widgets/gradient_colored_long_action_button.dart';
-import '../../../core/entities/product_category.dart';
 
-import '../../../core/entities/product.dart';
-import '../../../main.dart';
+import '../../../../core/entities/product.dart';
+import '../../../../core/entities/product_category.dart';
+import '../../../../main.dart';
+import '../../../widgets/gradient_colored_long_action_button.dart';
+import '../../home_screen/homepage.dart';
+import 'product_card_cart_screen.dart';
 
 class CartPage extends StatelessWidget {
   final BoxConstraints size;
@@ -54,14 +53,15 @@ class CartPage extends StatelessWidget {
   Widget _buildCartItems(List<ProductAndQuantity> productAndQuantity){
     final List<ProductCardCartPage> productCards = List<ProductCardCartPage>();
 
-    for(int i=0; i<productAndQuantity.length ; i++) 
+    for(int i=0; i<productAndQuantity.length ; i++) {
       productCards.add(ProductCardCartPage(
-        size: size,
+        containerheight: size.maxHeight * 0.14,
         quantity: productAndQuantity[i].quantity,
         product: productAndQuantity[i].product,
       )
     );
-
+    }
+    
     return ListView(children: productCards);
   }
 
@@ -106,6 +106,11 @@ class CartPage extends StatelessWidget {
     );
   }
 
+  ///mapProductToQuantity counts the quantity of a product type in products 
+  ///to generate a ProductAndQuantity object for each product type and quantity.
+  ///Products are differentiated by their product.name property.
+  ///Note that @param products is modified in the method. Therefore it is recommended to pass in a copy
+  ///of the actual products list using List<>.from() constructor
   List<ProductAndQuantity> _mapProductToQuantity(List<Product> products) {
     List<ProductAndQuantity> productsAndQuantities = List<ProductAndQuantity>();
     int length = products.length;
@@ -127,13 +132,16 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moreProducts = List<Product>.from(_moreProducts);
+    List<ProductAndQuantity> products = _mapProductToQuantity(moreProducts);
+    print(products);
     ctx = context;
     return Column(
       children: [
         Center(child: SizedBox(
           height: size.maxHeight * 0.4,
           width: size.maxWidth * 0.85,
-          child: _buildCartItems(_mapProductToQuantity(_moreProducts)))),
+          child: _buildCartItems(products))),
         Expanded(
           child: _buildPriceBreakdown(
             subTotal: 160,

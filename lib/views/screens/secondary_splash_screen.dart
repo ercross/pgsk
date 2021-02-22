@@ -19,7 +19,7 @@ class SecondarySplashScreen extends StatelessWidget {
                   fit: BoxFit.fill));
 
     final Widget _pgskIcon = Positioned(
-            top: mQ.size.height * 0.15,
+            top: mQ.size.height * 0.25,
             right: mQ.size.width * 0.2,
             left: mQ.size.width * 0.2,
             child: Image.asset(
@@ -29,7 +29,7 @@ class SecondarySplashScreen extends StatelessWidget {
           );
 
     final Widget _lowerText = Positioned(
-            top: mQ.size.height * 0.7,
+            top: mQ.size.height * 0.75,
             right: mQ.size.width * 0.2,
             left: mQ.size.width * 0.2,
             child: Column(
@@ -53,16 +53,7 @@ class SecondarySplashScreen extends StatelessWidget {
             ),
           );
 
-    final Widget _lowerLine = Positioned(
-      bottom: mQ.size.height * 0.01,
-      left: mQ.size.width * 0.3,
-      right: mQ.size.width * 0.3,
-      child: Divider(
-        color: Colors.grey,
-        height: 0,
-        thickness: 2,
-        ),
-    );
+  
 
     final Widget splashScreen = Scaffold(
       body: Stack(
@@ -70,7 +61,6 @@ class SecondarySplashScreen extends StatelessWidget {
           _background,
           _pgskIcon,
           _lowerText,
-          _lowerLine,
         ],
       ),
     );

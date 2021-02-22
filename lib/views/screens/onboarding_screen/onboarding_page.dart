@@ -125,17 +125,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ],
     );
 
-    final Widget _lowerLine = Positioned(
-      bottom: screenHeight * 0.01,
-      left: screenWidth * 0.3,
-      right: screenWidth * 0.3,
-      child: Divider(
-        color: Colors.grey,
-        height: 0,
-        thickness: 2,
-      ),
-    );
-
     final Widget _navButtons = Positioned(
       top: screenHeight * 0.87,
       left: screenWidth * 0.01,
@@ -163,7 +152,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onPressed: (){
                 setState((){
                   if (_currentImage != 3) _currentImage++;
-                  else Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+                  else Navigator.of(context).pushReplacementNamed(AuthenticationPage.routeName);
                 });
               },)
           ],
@@ -179,7 +168,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
             _buttonBar,
             _onboardingImages,
             _navButtons,
-            _lowerLine
       ],
     ));
   }

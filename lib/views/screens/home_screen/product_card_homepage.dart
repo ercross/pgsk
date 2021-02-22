@@ -6,13 +6,17 @@ import 'homepage.dart';
 
 
 class ProductCardHomePage extends StatelessWidget {
-  final BoxConstraints size;
+  final double height;
+  final double width;
   final Product product;
   final String buttonActionWord;
+  final bool includeActionButton;
 
   const ProductCardHomePage({
     @required this.product, 
-    @required this.size, 
+    @required this.width,
+    @required this.height, 
+    this.includeActionButton = true,
     this.buttonActionWord = "SHOP"
   });
 
@@ -21,8 +25,8 @@ class ProductCardHomePage extends StatelessWidget {
     return Container(
         padding: EdgeInsets.only(bottom: 5),
         margin: EdgeInsets.symmetric(vertical: 5),
-        height: size.maxHeight * 0.13,
-        width: size.maxWidth * HomePage.screenWidthMultiplier,
+        height: height * 0.13,
+        width: width * HomePage.screenWidthMultiplier,
         decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(
@@ -61,11 +65,15 @@ class ProductCardHomePage extends StatelessWidget {
             Expanded(
               child: SizedBox(),
             ),
-            GradientColoredLongActionButton(
+            includeActionButton 
+
+              ? GradientColoredLongActionButton(
                 text: buttonActionWord,
                 onPressed: () {},
-                width: size.maxWidth * 0.21,
-                height: size.maxHeight * 0.034)
+                width: width * 0.21,
+                height: height * 0.034)
+
+              : SizedBox()
           ],
         ));
   }

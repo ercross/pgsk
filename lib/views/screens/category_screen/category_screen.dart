@@ -129,9 +129,6 @@ class _CategoryPageState extends State<CategoryPage> {
     ..._products,
   ];
 
-//_moreProducts.map((product) => 
-        //ProductCardCategoryPage(product: product, size: size)).toList(),
-
   Widget _buildMiddleContent(BoxConstraints size) {
     final double desiredWidth = size.maxWidth * HomePage.screenWidthMultiplier;
     final double widthPerRow = desiredWidth / 2.1; //the 0.1 accounts for padding and spacing 
@@ -145,7 +142,7 @@ class _CategoryPageState extends State<CategoryPage> {
           width: widthPerRow,
           child: ListView(
             children: _moreProducts.map((product) => 
-              ProductCardCategoryPage(product: product, size: size)).toList(),
+              ProductCardCategoryPage(product: product, width: size.maxWidth)).toList(),
           ),
         ),
         SizedBox(
@@ -154,7 +151,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               Container(color: Colors.white, height: size.maxHeight * 0.04),
               ..._moreProducts.map((product) => 
-              ProductCardCategoryPage(product: product, size: size)).toList()
+              ProductCardCategoryPage(product: product, width: size.maxWidth)).toList()
             ] 
           ),
         )

@@ -74,8 +74,9 @@ class HomePage extends StatelessWidget {
       width: size.maxWidth * screenWidthMultiplier,
       child: ListView(
             children: products.map<ProductCardHomePage>((product) => ProductCardHomePage(
+              width: size.maxWidth,
               product: product,
-              size: size,)).toList(),
+              height: size.maxHeight,)).toList(),
           ),
     );
   }
