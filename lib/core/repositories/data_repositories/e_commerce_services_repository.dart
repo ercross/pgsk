@@ -1,6 +1,6 @@
-import '../../controllers/providers/cart.dart';
-import '../entities/order.dart';
-import '../entities/product.dart';
+import '../../../controllers/providers/cart.dart';
+import '../../entities/order.dart';
+import '../../entities/product.dart';
 
 ///TODO: To ensure users have access to the same services both on mobile and web platform,
 ///concrete implementations should ensure changes effected through these methods are persisted both locally and remotely

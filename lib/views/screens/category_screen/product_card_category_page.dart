@@ -36,7 +36,7 @@ class ProductCardCategoryPage extends StatelessWidget {
                           .copyWith(fontSize: 11, fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
-                    text: product.category.name,
+                    text: product.categoryName,
                     style: Theme.of(context).textTheme.subtitle2.copyWith(
                               fontSize: 9,
                             ),

@@ -10,15 +10,15 @@ class CartModel extends Equatable {
 
   ///map should be empty and ensure map is initialized before assigning it to from().
   CartModel.from(Cart cart, this.map) {
-    map.putIfAbsent("numberOfItems", ()=>cart.numberOfItems);
-    map.putIfAbsent("products", ()=>cart.products);
+    map.putIfAbsent("totalNumberOfProducts", ()=>cart.totalNumberOfProducts);
+    map.putIfAbsent("productsAndQuantity", ()=>cart.productsAndQuantity);
     map.putIfAbsent("total", ()=>cart.total);
   }
 
   Cart toCart() {
     Cart cart = Cart();
-    cart.numberOfItems = map['numberOfItems'];
-    cart.products.add(map['products']); //TODO ensure products is gotten out of this
+    cart.totalNumberOfProducts = map['totalNumberOfProducts'];
+    cart.productsAndQuantity.add(map['productsAndQuantity']); //TODO ensure products is gotten out of this
     cart.total = map['total'];
     return cart;
   } 

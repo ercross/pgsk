@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+
 import 'controllers/providers/bottom_nav_bar_active_icon.dart';
+import 'controllers/providers/cart.dart';
+import 'controllers/providers/checkout_progress.dart';
+import 'controllers/providers/payment_data.dart';
 import 'views/screens/authentication_screen/authentication_page.dart';
 import 'views/screens/category_screen/category_screen.dart';
+import 'views/screens/checkout_screen/checkout_screen.dart';
+import 'views/screens/checkout_screen/checkout_successful.dart';
+import 'views/screens/explore_screen/explore_screen.dart';
 import 'views/screens/getting_started_screen/getting_started_screen.dart';
 import 'views/screens/home_screen/homepage.dart';
 import 'views/screens/onboarding_screen/onboarding_page.dart';
 import 'views/screens/search_screen/search_screen.dart';
 import 'views/screens/secondary_splash_screen.dart';
-import 'views/screens/explore_screen/explore_screen.dart';
 import 'views/screens/user_account_screen/user_account_screen.dart';
 import 'views/widgets/on_page_loading_spinner.dart';
 
@@ -18,10 +24,21 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+
   runApp(
-    ChangeNotifierProvider<BottomNavBarActiveIcon>(
-        create: (ctx) => BottomNavBarActiveIcon(),
-        child: PGSK()));
+    MultiProvider(
+      child: PGSK(),
+      providers: [
+        ChangeNotifierProvider<Cart>(
+          create: (_) => Cart(),
+        ),
+        ChangeNotifierProvider<BottomNavBarActiveIcon>(
+            create: (_) => BottomNavBarActiveIcon()),
+        ChangeNotifierProvider<PaymentData>(create: (_) => PaymentData()),
+        ChangeNotifierProvider<CheckoutProgress>(
+            create: (_) => CheckoutProgress()),
+      ],
+    ));
 }
 
 class PGSK extends StatelessWidget {
@@ -29,38 +46,41 @@ class PGSK extends StatelessWidget {
   static const String currency = "\$";
 
   static const TextStyle homepageTexts = TextStyle(
-          color: Colors.black,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w800,
-          fontSize: 14,
-          wordSpacing: 0.5,
+    color: Colors.black,
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w800,
+    fontSize: 14,
+    wordSpacing: 0.5,
   );
 
   @override
   Widget build(BuildContext context) {
-    
+
     return MaterialApp(
       title: 'PGSK',
       theme: cookTheme(),
       home: GestureDetector(
-        onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-        child: SafeArea(child: ExplorePage()),
+        onTap: () =>
+            WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
+        child: SafeArea(child: HomePage()),
       ),
       routes: {
-        UserAccountPage.routeName: (ctx) => UserAccountPage(),
-        SearchPage.routeName: (ctx) => SearchPage(),
-        ExplorePage.routeName: (ctx) => ExplorePage(),
-        CategoryPage.routeName: (ctx) => CategoryPage(),
-        GettingStartedPage.routeName: (ctx) => GettingStartedPage(),
-        OnpageLoadingSpinner.routeName: (ctx) => OnpageLoadingSpinner(),
-        HomePage.routeName: (ctx) => HomePage(),
-        SecondarySplashScreen.routeName: (ctx) => SecondarySplashScreen(),
-        OnboardingPage.routeName: (ctx) => OnboardingPage(),
-        AuthenticationPage.routeName: (ctx) =>  AuthenticationPage(),
+        CheckoutSuccessPage.routeName: (_) => CheckoutSuccessPage(),
+        CheckoutPage.routeName: (_) => CheckoutPage(),
+        UserAccountPage.routeName: (_) => UserAccountPage(),
+        SearchPage.routeName: (_) => SearchPage(),
+        ExplorePage.routeName: (_) => ExplorePage(),
+        CategoryPage.routeName: (_) => CategoryPage(),
+        GettingStartedPage.routeName: (_) => GettingStartedPage(),
+        OnpageLoadingSpinner.routeName: (_) => OnpageLoadingSpinner(),
+        HomePage.routeName: (_) => HomePage(),
+        SecondarySplashScreen.routeName: (_) => SecondarySplashScreen(),
+        OnboardingPage.routeName: (_) => OnboardingPage(),
+        AuthenticationPage.routeName: (_) => AuthenticationPage(),
       },
     );
   }
-  
+
   ///cookTheme prepares PGSK theme
   ///This method was prepared to avoid the problem described below.
   ///The context passed in PGSK().build(context) contains Flutter default theme
@@ -74,59 +94,53 @@ class PGSK extends StatelessWidget {
     const Color white = Colors.white;
 
     TextTheme textTheme = ThemeData.light().textTheme.copyWith(
-      //used for onboarding page product range topics
-        headline4: TextStyle(
-          color: accentColor,
-          fontFamily: primaryFont,
-          fontSize: 20,
-          fontWeight: FontWeight.w600
-        ),
-        headline5: TextStyle(
-          color: white,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w900
-        ),
-        headline6: TextStyle(
-          color: white,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w600
-        ),
-        bodyText2: TextStyle(
-          color: white,
-          fontSize: 12,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w600
-        ),
-        bodyText1: TextStyle(
-          color: white,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w600
-        ),
-        subtitle2: TextStyle(
-          color: grey,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w800
-        ),
-        subtitle1: TextStyle(
-          color: black,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w300
-        ),
-        //used for authentication page OvalShapedTextField.FieldFor
-        caption: TextStyle(
-          color: black,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-        ),
-        button: TextStyle(
-          color: primaryColorGradient1,
-          fontFamily: primaryFont,
-          fontWeight: FontWeight.w500,
-        ),
-      );
+          //used for onboarding page product range topics
+          headline4: TextStyle(
+              color: accentColor,
+              fontFamily: primaryFont,
+              fontSize: 20,
+              fontWeight: FontWeight.w600),
+          headline5: TextStyle(
+              color: white,
+              fontFamily: primaryFont,
+              fontWeight: FontWeight.w900),
+          headline6: TextStyle(
+              color: white,
+              fontFamily: primaryFont,
+              fontWeight: FontWeight.w600),
+          bodyText2: TextStyle(
+              color: white,
+              fontSize: 12,
+              fontFamily: primaryFont,
+              fontWeight: FontWeight.w600),
+          bodyText1: TextStyle(
+              color: white,
+              fontFamily: primaryFont,
+              fontWeight: FontWeight.w600),
+          subtitle2: TextStyle(
+              color: grey,
+              fontFamily: primaryFont,
+              fontWeight: FontWeight.w800),
+          subtitle1: TextStyle(
+              color: black,
+              fontFamily: primaryFont,
+              fontWeight: FontWeight.w300),
+          //used for authentication page OvalShapedTextField.FieldFor
+          caption: TextStyle(
+            color: black,
+            fontFamily: primaryFont,
+            fontWeight: FontWeight.w700,
+            fontSize: 12,
+          ),
+          button: TextStyle(
+            color: primaryColorGradient1,
+            fontFamily: primaryFont,
+            fontWeight: FontWeight.w500,
+          ),
+        );
 
-    final TabBarTheme tabBarTheme = TabBarTheme(indicatorSize: TabBarIndicatorSize.tab);
+    final TabBarTheme tabBarTheme =
+        TabBarTheme(indicatorSize: TabBarIndicatorSize.tab);
 
     final AppBarTheme appBarTheme = AppBarTheme(
       elevation: 0,
@@ -135,13 +149,12 @@ class PGSK extends StatelessWidget {
     );
 
     return ThemeData(
-      primaryColor: primaryColorGradient1,
-      accentColor: accentColor,
-      splashColor: primaryColorGradient2,
-      primaryColorLight: primaryColorGradient2,
-      textTheme: textTheme,      
-      tabBarTheme: tabBarTheme,
-      appBarTheme: appBarTheme
-    );
+        primaryColor: primaryColorGradient1,
+        accentColor: accentColor,
+        splashColor: primaryColorGradient2,
+        primaryColorLight: primaryColorGradient2,
+        textTheme: textTheme,
+        tabBarTheme: tabBarTheme,
+        appBarTheme: appBarTheme);
   }
 }

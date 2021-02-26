@@ -4,7 +4,6 @@ import '../../../core/entities/product.dart';
 import '../../widgets/gradient_colored_long_action_button.dart';
 import 'homepage.dart';
 
-
 class ProductCardHomePage extends StatelessWidget {
   final double height;
   final double width;
@@ -12,13 +11,41 @@ class ProductCardHomePage extends StatelessWidget {
   final String buttonActionWord;
   final bool includeActionButton;
 
-  const ProductCardHomePage({
-    @required this.product, 
-    @required this.width,
-    @required this.height, 
-    this.includeActionButton = true,
-    this.buttonActionWord = "SHOP"
-  });
+  const ProductCardHomePage(
+      {@required this.product,
+      @required this.width,
+      @required this.height,
+      this.includeActionButton = true,
+      this.buttonActionWord = "SHOP"});
+
+  Widget _buildInfoText(BuildContext context) {
+    return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5.0),
+                child: Text("${product.name}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(fontSize: 14, fontWeight: FontWeight.w600)),
+              ),
+              Text("${product.categoryName}\n",
+                  style: Theme.of(context).textTheme.subtitle2.copyWith( fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      )),
+              Expanded(
+                child: Text(
+                  " \$${product.price.toStringAsFixed(0)}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption
+                      .copyWith(fontWeight: FontWeight.w700, fontSize: 14),
+                ),
+              )
+            ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,45 +62,22 @@ class ProductCardHomePage extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
               product.imageUrl,
               fit: BoxFit.fitHeight,
             ),
-            RichText(
-                text: TextSpan(
-                    text: "${product.name}\n\n",
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(fontSize: 11, fontWeight: FontWeight.w700),
-                    children: [
-                  TextSpan(
-                      text: "${product.category.name}\n\n\n",
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
-                            fontSize: 9,
-                          )),
-                  TextSpan(
-                    text: " \$${product.price.toStringAsFixed(0)}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(fontWeight: FontWeight.w800),
-                  )
-                ])),
+            _buildInfoText(context),
             Expanded(
               child: SizedBox(),
             ),
-            includeActionButton 
-
-              ? GradientColoredLongActionButton(
-                text: buttonActionWord,
-                onPressed: () {},
-                width: width * 0.21,
-                height: height * 0.034)
-
-              : SizedBox()
+            includeActionButton
+                ? GradientColoredLongActionButton(
+                    text: buttonActionWord,
+                    onPressed: () {},
+                    width: width * 0.21,
+                    height: height * 0.034)
+                : SizedBox()
           ],
         ));
   }

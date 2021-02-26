@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:pgsk/views/widgets/gradient_colored_long_action_button.dart';
 import '../../../controllers/providers/authentication_tab_index.dart';
 import '../../widgets/oval_shaped_text_input.dart';
@@ -20,13 +19,13 @@ class SignInTab extends StatelessWidget {
   static BuildContext ctx;
 
   void _onSignInButtonPressed() async {
-    final ConnectivityResult cR = await Connectivity().checkConnectivity();
-    if(cR == ConnectivityResult.mobile || cR == ConnectivityResult.wifi) {
-      //TODO: send packet and replace Future.delayed with actual network response data
-      Future.delayed(Duration(seconds: 5), () => Navigator.of(ctx).pushNamed(OnpageLoadingSpinner.routeName));
-      Navigator.of(ctx).pushReplacementNamed(HomePage.routeName);
-    }
-    else Scaffold.of(ctx).showSnackBar(SnackBar(
+    // final ConnectivityResult cR = await Connectivity().checkConnectivity();
+    // if(cR == ConnectivityResult.mobile || cR == ConnectivityResult.wifi) {
+    //   //TODO: send packet and replace Future.delayed with actual network response data
+    //   Future.delayed(Duration(seconds: 5), () => Navigator.of(ctx).pushNamed(OnpageLoadingSpinner.routeName));
+    //   Navigator.of(ctx).pushReplacementNamed(HomePage.routeName);
+    // }
+    Scaffold.of(ctx).showSnackBar(SnackBar(
       content: Text("No Internet Connection", 
         textAlign: TextAlign.center, 
         style: Theme.of(ctx).textTheme.button.copyWith(color: Colors.white)),

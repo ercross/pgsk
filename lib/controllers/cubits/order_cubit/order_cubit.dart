@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pgsk/core/repositories/data_repositories/e_commerce_services_repository.dart';
 
-import '../../../core/data_repositories/e_commerce_services_repository.dart';
 import '../../../core/entities/order.dart';
 
 part 'order_state.dart';

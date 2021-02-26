@@ -1,4 +1,4 @@
-import '../entities/user.dart';
+import 'package:pgsk/core/entities/user.dart';
 
 ///TODO: To ensure users have access to the same services both on mobile and web platform,
 ///concrete implementations should ensure that changes through any of the methods in this repository be persisted 

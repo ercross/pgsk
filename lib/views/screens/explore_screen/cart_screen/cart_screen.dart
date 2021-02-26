@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:pgsk/views/screens/checkout_screen/checkout_screen.dart';
 
 import '../../../../core/entities/product.dart';
 import '../../../../core/entities/product_category.dart';
@@ -88,7 +89,7 @@ class CartPage extends StatelessWidget {
           SizedBox(height: 10),
           _buildAPriceRow("Total", total),
           SizedBox(height: 10),
-          Align(alignment: Alignment.bottomCenter, child: GradientColoredLongActionButton(text: "CHECK OUT", onPressed: (){}, height: size.maxHeight * 0.07, width: size.maxWidth * HomePage.screenWidthMultiplier))
+          Align(alignment: Alignment.bottomCenter, child: GradientColoredLongActionButton(text: "CHECKOUT", onPressed: () => Navigator.of(ctx).pushReplacementNamed(CheckoutPage.routeName), height: size.maxHeight * 0.07, width: size.maxWidth * HomePage.screenWidthMultiplier))
         ],
       )
     );
@@ -106,34 +107,10 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  ///mapProductToQuantity counts the quantity of a product type in products 
-  ///to generate a ProductAndQuantity object for each product type and quantity.
-  ///Products are differentiated by their product.name property.
-  ///Note that @param products is modified in the method. Therefore it is recommended to pass in a copy
-  ///of the actual products list using List<>.from() constructor
-  List<ProductAndQuantity> _mapProductToQuantity(List<Product> products) {
-    List<ProductAndQuantity> productsAndQuantities = List<ProductAndQuantity>();
-    int length = products.length;
-    Product product;
-
-    while(length != 0) {
-      product = products.first;
-      final int initialLength = products.length;
-      //removes all occurrences of product.name
-      products.removeWhere( (otherProduct) => otherProduct.name.compareTo(product.name) == 0);
-      final int truncatedLength = products.length;
-      length = truncatedLength;
-      final int quantity = initialLength - truncatedLength;
-      productsAndQuantities.add(ProductAndQuantity(quantity, product));
-    }
-
-    return productsAndQuantities;
-  }
-
   @override
   Widget build(BuildContext context) {
     final moreProducts = List<Product>.from(_moreProducts);
-    List<ProductAndQuantity> products = _mapProductToQuantity(moreProducts);
+    List<ProductAndQuantity> products = ProductAndQuantity.from(products: moreProducts);
     print(products);
     ctx = context;
     return Column(
@@ -155,9 +132,40 @@ class CartPage extends StatelessWidget {
   }
 }
 
+///ProductAndQuantity encapsulates the quantity of a type of product to the quantity of it in the cart
 class ProductAndQuantity {
-  final int quantity;
+
+  ///quantity is the amount of this.product in the cart since there can be more than one this.product in the cart
+  ///quantity is made an optional arg so that users of this class can either increment/decrement quantity directly
+  ///or pass in a whole value for it
+  int quantity = 0;
   final Product product;
 
-  const ProductAndQuantity(this.quantity, this.product);
+  ProductAndQuantity(this.product, [int _quantity]) {
+    if(_quantity != null) quantity = _quantity;
+  }
+
+  ///from counts the quantity of a product type in products 
+  ///to generate a ProductAndQuantity object for each product type and quantity.
+  ///Products are differentiated by their product.name property.
+  ///Note that @param products is modified in the method. Therefore it is recommended to pass in a copy
+  ///of the actual products list using List<>.from() constructor
+  static List<ProductAndQuantity> from({@required List<Product> products}) {
+    List<ProductAndQuantity> productsAndQuantities = List<ProductAndQuantity>();
+    int length = products.length;
+    Product product;
+
+    while(length != 0) {
+      product = products.first;
+      final int initialLength = products.length;
+      //removes all occurrences of product.name
+      products.removeWhere( (otherProduct) => otherProduct.name.compareTo(product.name) == 0);
+      final int truncatedLength = products.length;
+      length = truncatedLength;
+      final int quantity = initialLength - truncatedLength;
+      productsAndQuantities.add(ProductAndQuantity(product, quantity));
+    }
+
+    return productsAndQuantities;
+  }
 }

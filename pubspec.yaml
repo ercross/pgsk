@@ -25,6 +25,7 @@ dependencies:
   http: ^0.12.2
   flutter_bloc: ^6.1.0
   provider: ^4.3.3
+  data_connection_checker: ^0.3.4
   #flutter_secure_storage stores data in SharedPreferences but with encryption in android. 
   #So it can store data that sharedPreferences can store
   flutter_secure_storage: ^3.3.5 
@@ -34,7 +35,6 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.8.1
   flutter_native_splash: ^0.2.10
-  connectivity: ^2.0.2
 
 flutter:
   uses-material-design: true
