@@ -1,8 +1,9 @@
 import 'package:http/http.dart' as http;
-import 'package:pgsk/data/impl_data_repositories/local_storage_repository_impl.dart';
 
-import '../../core/data_repositories/user_account_services_repository.dart';
-import '../../core/entities/user.dart';
+import '../../../core/entities/user.dart';
+import '../../../core/repositories/data_repositories/user_account_services_repository.dart';
+import 'local_storage_repository_impl.dart';
+
 
 class UserAccountServicesRepositoryImpl extends UserAccountServicesRepository {
   final String accountApi = LocalStorageRepositoryImpl.apiUrl + "/account";

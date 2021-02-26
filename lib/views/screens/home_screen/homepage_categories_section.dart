@@ -18,25 +18,11 @@ class HomePageCategoriesSection extends StatefulWidget {
 class _HomePageCategoriesSectionState extends State<HomePageCategoriesSection> {
 
   final String _prefix = "assets/images/";
-  int activeCategory = 0;
-  List<ProductCategory> categories;
 
-  Widget _buildProductList(BoxConstraints size) {
-    
-    return SizedBox(
-      height: size.maxHeight * 0.33,
-      width: size.maxWidth * HomePage.screenWidthMultiplier,
-      child: ListView(
-        children: products
-            .map<ProductCardHomePage>((product) => ProductCardHomePage(
-                  width: size.maxWidth,
-                  product: product,
-                  height: size.maxHeight,
-                ))
-            .toList(),
-      ),
-    );
-  }
+  ///activeCategory is the category whose products are currently on display on the homepage
+  int _activeCategory = 0;
+  List<ProductCategory> _categories = List<ProductCategory>();
+  ProductCategory _categoryCurrentlyOnDisplay;
 
   Widget _buildCategoryContent() {
     Padding(
@@ -64,10 +50,10 @@ class _HomePageCategoriesSectionState extends State<HomePageCategoriesSection> {
     @required String imageLabel,
   }) {
     
-    final bool isActive = index == activeCategory;
+    final bool isActive = index == _activeCategory;
 
     return GestureDetector(
-      onTap: () =>  setState(() => activeCategory = index),
+      onTap: () =>  setState(() => _activeCategory = index),
       child: Container(
         height: widget.allowedHeight * 0.125,
         width: (widget.allowedWidth * HomePage.screenWidthMultiplier) / 4.2,

@@ -21,28 +21,31 @@ class OrdersPage extends StatelessWidget {
         price: 40,
         specification: "",
         description: "",
-        category: ProductCategory(id: 1.toString(), name: "Antivirus Protection"),
+        categoryName: "Antivirus Protection",
         imageUrl: prefix + "product_1_avast.png"
       ),
+
       Product(
         id: 2.toString(),
         name: "Quick Heal Antivirus",
         price: 50,
         specification: "",
         description: "",
-        category: ProductCategory(id: 2.toString(), name: "Internet Protection"),
+        categoryName: "Internet Protection",
         imageUrl: prefix + "product_2_quickheal.png"
       ),
+
       Product(
         id: 3.toString(),
         name: "Kaspersky Antivirus",
         price: 60,
         specification: "",
         description: "",
-        category: ProductCategory(id: 3.toString(), name: "Antivirus Protection"),
+        categoryName: "Antivirus Protection",
         imageUrl: prefix + "product_3_kaspersky.png"
       ),
     ];
+    
     return ListView(
           children: products.map<ProductCardHomePage>((product) => ProductCardHomePage(
             includeActionButton: false,

@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../core/data_repositories/local_storage_repository.dart';
+import '../../../core/repositories/data_repositories/local_storage_repository.dart';
+
 
 class LocalStorageRepositoryImpl extends LocalStorageRepository{
   

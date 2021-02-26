@@ -14,7 +14,8 @@ class ProductCategoryModel extends Equatable{
 
   ProductCategory toProductCategory() => ProductCategory(
     id: map['id'],
-    name: map['name']
+    name: map['name'],
+    products: map['products']
   );
 
   @override

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:pgsk/views/screens/checkout_screen/checkout_screen.dart';
 
 import '../../../../core/entities/product.dart';
-import '../../../../core/entities/product_category.dart';
 import '../../../../main.dart';
 import '../../../widgets/gradient_colored_long_action_button.dart';
 import '../../home_screen/homepage.dart';
@@ -21,25 +20,27 @@ class CartPage extends StatelessWidget {
         price: 40,
         specification: "",
         description: "",
-        category: ProductCategory(id: 1.toString(), name: "Antivirus Protection"),
+        categoryName: "Antivirus Protection",
         imageUrl: prefix + "product_1_avast.png"
       ),
+
       Product(
         id: 2.toString(),
         name: "Quick Heal Antivirus",
         price: 50,
         specification: "",
         description: "",
-        category: ProductCategory(id: 2.toString(), name: "Internet Protection"),
+        categoryName: "Internet Protection",
         imageUrl: prefix + "product_2_quickheal.png"
       ),
+
       Product(
         id: 2.toString(),
         name: "Kaspersky Antivirus",
         price: 75,
         specification: "",
         description: "",
-        category: ProductCategory(id: 2.toString(), name: "Internet Protection"),
+        categoryName: "Internet Protection",
         imageUrl: prefix + "product_3_kaspersky.png"
       ),
     ];

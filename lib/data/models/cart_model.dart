@@ -5,7 +5,8 @@ import '../../controllers/providers/cart.dart';
 
 class CartModel extends Equatable {
   final Map<String, dynamic> map;
-
+  
+  ///Note that @param map must be empty
   const CartModel(this.map);
 
   ///map should be empty and ensure map is initialized before assigning it to from().

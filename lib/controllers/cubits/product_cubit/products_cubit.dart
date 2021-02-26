@@ -16,7 +16,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   }
 
   void fetchProductByCategory(String categoryName) async {
-    List<Product> productCategory = await entitiesRepository.fetchProductByCategory(categoryName);
+    List<Product> productCategory = await entitiesRepository.fetchProductsByCategory(categoryName);
     emit(ProductsByCategory(productCategory));
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pgsk/core/data_repositories/image_repository.dart';
+
+import '../../../core/repositories/data_repositories/image_repository.dart';
+
 
 class TVDisplay extends StatefulWidget {
   final ImageRepository imageRepository;

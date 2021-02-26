@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pgsk/views/screens/home_screen/homepage.dart';
-import 'package:pgsk/views/screens/secondary_splash_screen.dart';
 
-import '../../core/data_repositories/image_repository.dart';
-import '../../main.dart';
+import '../../../core/repositories/data_repositories/image_repository.dart';
+import '../../../views/screens/home_screen/homepage.dart';
+
 
 class ImageRepositoryImpl extends ImageRepository {
 
