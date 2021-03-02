@@ -100,6 +100,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Cart cartProvider = Provider.of<Cart>(context);
     ctx = context;
+    cartProvider.fetchMyCart();
 
     //if size is null, then cart page should be rendered as a full page
     if (size == null) {

@@ -205,7 +205,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                     child: Icon(Icons.arrow_back_ios, color: Colors.black, size: 30)),
                   trailing: Align(
                     alignment: Alignment.bottomRight,
-                    child: FavoriteButton())
+                    child: FavoriteButton(widget.product))
                 );
   }
 

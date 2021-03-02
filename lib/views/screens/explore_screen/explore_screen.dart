@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pgsk/views/screens/explore_screen/cart_screen/cart_screen.dart';
 import 'package:pgsk/views/screens/explore_screen/wishlist_screen.dart';
 
+import '../../../main.dart';
 import '../home_screen/custom_nav_bar.dart';
 import 'orders_screen.dart';
 
@@ -46,6 +47,7 @@ class _ExplorePageState extends State<ExplorePage>
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: TabBar(
+                    labelStyle: PGSK.homepageTexts,
                     indicatorSize: TabBarIndicatorSize.tab,
                     indicatorPadding: EdgeInsets.all(8),
                     indicatorColor: Colors.grey,

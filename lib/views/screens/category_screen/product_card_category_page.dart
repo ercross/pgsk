@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pgsk/views/widgets/favorite_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/providers/cart.dart';
@@ -33,12 +34,19 @@ class ProductCardCategoryPage extends StatelessWidget {
     final Widget _actionButtons = Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Expanded(child: SizedBox()),
+
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: FavoriteButton(product),
+                ),
+                
                 IconButton(
                     onPressed: () => Provider.of<Cart>(context, listen: false).addProduct(product),
                     icon: Icon(Icons.add_shopping_cart_rounded, color: Theme.of(context).accentColor)
                 ),
-                SizedBox(width: 15),
+
+                Expanded(child: SizedBox()),
+
                 Padding(
                   padding: const EdgeInsets.only(bottom: 2,right: 8.0),
                   child: GradientColoredLongActionButton(

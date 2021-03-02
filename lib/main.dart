@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pgsk/controllers/cubits/image_cubit/image_cubit.dart';
-import 'package:pgsk/data/repositories_impl/data_repositories_impl/impl_entities_repository.dart';
-import 'package:pgsk/data/repositories_impl/data_repositories_impl/impl_image_repository.dart';
 import 'package:provider/provider.dart';
 
-
+import 'controllers/cubits/image_cubit/image_cubit.dart';
 import 'controllers/providers/bottom_nav_bar_active_icon.dart';
 import 'controllers/providers/cart.dart';
 import 'controllers/providers/checkout_progress.dart';
 import 'controllers/providers/payment_data.dart';
+import 'controllers/providers/wishlist.dart';
+import 'data/repositories_impl/data_repositories_impl/impl_entities_repository.dart';
+import 'data/repositories_impl/data_repositories_impl/impl_image_repository.dart';
+import 'data/repositories_impl/services_repositories_impl/e_commerce_services_repository_impl.dart';
 import 'views/screens/authentication_screen/authentication_page.dart';
 import 'views/screens/category_screen/category_screen.dart';
 import 'views/screens/checkout_screen/checkout_screen.dart';
@@ -32,11 +33,11 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<Cart>(create: (_) => Cart(),),
+        ChangeNotifierProvider<Cart>(create: (_) => Cart(ECommerceServicesRepositoryImpl()),),
         ChangeNotifierProvider<BottomNavBarActiveIcon>(create: (_) => BottomNavBarActiveIcon()),
         ChangeNotifierProvider<PaymentData>(create: (_) => PaymentData()),
         ChangeNotifierProvider<CheckoutProgress>(create: (_) => CheckoutProgress()),
-        ChangeNotifierProvider<Cart>(create: (_) => Cart(),),
+        ChangeNotifierProvider<Wishlist>(create: (_) => Wishlist(ECommerceServicesRepositoryImpl()),),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -67,7 +68,7 @@ class PGSK extends StatelessWidget {
       home: GestureDetector(
         onTap: () =>
             WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-        child: SafeArea(child: CategoryPage(EntitiesRepositoryImpl())),
+        child: SafeArea(child: SecondarySplashScreen())),
       ),
       routes: {
         CheckoutSuccessPage.routeName: (_) => CheckoutSuccessPage(),

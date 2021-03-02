@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../controllers/providers/cart.dart';
-import '../../core/entities/order.dart';
-import '../../core/entities/product.dart';
 import '../../core/entities/user.dart';
 import '../../core/repositories/services_repository/user_account_services_repository.dart';
 
 
-
+//TODO: Refactor: After going through this today, March 2nd, 2021, I find this unnecessarily complex.
+//Refactor to just use a locally stored UserInfo and fetch info from server on init, 
+//if null, user is not registered/signed-in
 
 ///So as to implement Singleton for UserAccount, UserAccount can only be acquired and instantiated through AccountFactory
 ///Please read the comment on AccountFactory
@@ -53,8 +52,10 @@ class AccountFactory with ChangeNotifier{
       => AccountFactory._(userAccountServicesRepository);
 
   ///createUserAccount creates a new account. 
-  void createUserAccount(UserInfo info, {Cart cart, List<Order> orders, List<Product> wishlist}) {
-    account = _UserAccount._(info);
+  ///@info is not expected to contain id field and in fact shouldn't contain the info field
+  void createUserAccount(UserInfo info) async {
+    UserInfo registeredUser = await userAccountServicesRepository.register(info);
+    account = _UserAccount._(registeredUser);
     notifyListeners();
   }
 
@@ -62,15 +63,15 @@ class AccountFactory with ChangeNotifier{
   ///returns null if userId is empty or null
   ///Call AccountFactory.account to fetch the user account data in memory
   void fetchAccountData(String userId) async {
-    if (userId == null || userId.isEmpty) return null;
-    Map<String, dynamic> accountData = await userAccountServicesRepository.fetchUserAccount(userId);
-    account = _UserAccount.from(accountData);
+    if (userId == null || userId.isEmpty) account = null;
+    else account = _UserAccount.from( await userAccountServicesRepository.fetchUserAccount(userId));
     notifyListeners();
   }
 
   ///changeUserInfo changes account.userInfo for this user
   void changeUserInfo(UserInfo userInfo) {
     account.info = userInfo;
+    userAccountServicesRepository.changeUserInfo(account.info);
     notifyListeners();
   }
 }

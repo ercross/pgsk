@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 
 import '../../../core/entities/user.dart';
-import '../../../core/repositories/data_repositories/user_account_services_repository.dart';
-import 'local_storage_repository_impl.dart';
+import '../../../core/repositories/services_repository/user_account_services_repository.dart';
+import '../data_repositories_impl/local_storage_repository_impl.dart';
 
 
 class UserAccountServicesRepositoryImpl extends UserAccountServicesRepository {
@@ -34,7 +34,7 @@ class UserAccountServicesRepositoryImpl extends UserAccountServicesRepository {
   bool get isRegisteredUser => throw UnimplementedError();
 
   @override
-  Future<bool> register(UserInfo user) {
+  Future<UserInfo> register(UserInfo user) {
     
   }
 

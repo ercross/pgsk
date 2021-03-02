@@ -16,7 +16,7 @@ abstract class ECommerceServicesRepository {
 
   Future<bool> checkout(Order order);
 
-  Future<bool> updateWishlist(List<Product> wishlist);
+  Future<Set<Product>> fetchWishlistItems();
 
   Future<bool> createNewOrder(Order newOrder);
 

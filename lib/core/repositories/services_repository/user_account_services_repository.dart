@@ -1,4 +1,4 @@
-import 'package:pgsk/core/entities/user.dart';
+import '../../entities/user.dart';
 
 ///TODO: To ensure users have access to the same services both on mobile and web platform,
 ///concrete implementations should ensure that changes through any of the methods in this repository be persisted 
@@ -15,9 +15,9 @@ abstract class UserAccountServicesRepository{
   Future<bool> changeUserInfo (UserInfo userInfo);
 
   ///register registers a user to PGSK platform 
-  ///Returns true if registration attempt is successful, false otherwise
+  ///Returns UserInfo, which now contains the id, if registration is successful, null otherwise
   ///concrete implementation must save user on localPersistenceRepository
-  Future<bool> register(UserInfo user);
+  Future<UserInfo> register(UserInfo user);
   
   ///signIn signs existing user into the app. 
   ///Returns an authentication token if provided credential is correct or signIn is successful, null otherwise
