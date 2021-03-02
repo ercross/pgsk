@@ -15,7 +15,7 @@ class Product extends Equatable {
   final int customersRatings;
 
   const Product({
-    @required this.id,
+    this.id,
     @required this.name,
     @required this.categoryName,
     @required this.price,

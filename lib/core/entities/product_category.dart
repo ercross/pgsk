@@ -7,14 +7,16 @@ class ProductCategory extends Equatable {
   final int id;
   final String name;
   final List<Product> products;
+  final String imageUrl;
 
   const ProductCategory({
     this.id,
+    this.imageUrl,
     @required this.name,
     @required this.products
   });
 
   @override
-  List<Object> get props => [id, name, products];
+  List<Object> get props => [id, name, products, imageUrl];
 
 }

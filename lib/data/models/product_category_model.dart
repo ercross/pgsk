@@ -10,12 +10,15 @@ class ProductCategoryModel extends Equatable{
   ProductCategoryModel.from(ProductCategory category, this.map) {
     map.putIfAbsent('id', () => category.id);
     map.putIfAbsent('name', () => category.name);
+    map.putIfAbsent('products', () => category.products);
+    map.putIfAbsent('imageUrl', () => category.imageUrl);
   }
 
   ProductCategory toProductCategory() => ProductCategory(
     id: map['id'],
     name: map['name'],
-    products: map['products']
+    products: map['products'],
+    imageUrl: map['imageUrl'],
   );
 
   @override

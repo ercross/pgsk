@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:pgsk/views/screens/explore_screen/cart_screen/cart_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:pgsk/core/repositories/services_repository/e_commerce_services_repository.dart';
 
 import '../../core/entities/product.dart';
+import '../../views/screens/explore_screen/cart_screen/cart_screen.dart';
 
 ///Cart doesn't extends Equatable as Cart is implemented as a singleton
 class Cart with ChangeNotifier{
@@ -13,10 +14,9 @@ class Cart with ChangeNotifier{
   ///i.e., to get a
   final Set<Product> _uniqueProducts = Set<Product>();
 
-  //singleton implementation
-  Cart._singleton();
-  static final Cart singleton = Cart._singleton();
-  factory Cart() => singleton;
+  final ECommerceServicesRepository repository;
+
+  Cart(this.repository);
 
   void addProduct(Product product) {
     if (_uniqueProducts.contains(product)) {
@@ -51,6 +51,14 @@ class Cart with ChangeNotifier{
       notifyListeners();
     }
   }
+
+  //TODO: fetches cart products at first start
+  void fetchMyCart() {
+
+  }
+
+  //TODO: implement to resync the price of these products with the PGSK server
+  void refreshProductsInfo (List<int> productIds){}
 
   @override
     String toString() => "Cart info\n number of items: $totalNumberOfProducts \ntotal: $total \n products: $productsAndQuantity";

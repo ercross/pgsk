@@ -10,7 +10,15 @@ abstract class ImageRepository {
   ///fetchFromUrl fetches a single image from the Url
   ///Note that the fetched image must be given a defined width and height 
   ///to avoid display overflow error
-  Image fetchFromUrl (String imageUrl);
+  Future<Image> fetchFromUrl ({
+    @required String imageUrl,
+    @required double displayWidth,
+    @required double displayHeight,
+  });
 
-  List<Image> fetchFromUrls ();
+  Future<List<Image>> fetchFromUrls ({
+    @required List<String> imagesUrls,
+    @required double displayWidth,
+    @required double displayHeight,
+  });
 }

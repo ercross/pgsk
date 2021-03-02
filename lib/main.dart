@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pgsk/controllers/cubits/image_cubit/image_cubit.dart';
+import 'package:pgsk/data/repositories_impl/data_repositories_impl/impl_entities_repository.dart';
+import 'package:pgsk/data/repositories_impl/data_repositories_impl/impl_image_repository.dart';
 import 'package:provider/provider.dart';
 
 
@@ -27,17 +31,18 @@ void main() {
 
   runApp(
     MultiProvider(
-      child: PGSK(),
       providers: [
-        ChangeNotifierProvider<Cart>(
-          create: (_) => Cart(),
-        ),
-        ChangeNotifierProvider<BottomNavBarActiveIcon>(
-            create: (_) => BottomNavBarActiveIcon()),
+        ChangeNotifierProvider<Cart>(create: (_) => Cart(),),
+        ChangeNotifierProvider<BottomNavBarActiveIcon>(create: (_) => BottomNavBarActiveIcon()),
         ChangeNotifierProvider<PaymentData>(create: (_) => PaymentData()),
-        ChangeNotifierProvider<CheckoutProgress>(
-            create: (_) => CheckoutProgress()),
+        ChangeNotifierProvider<CheckoutProgress>(create: (_) => CheckoutProgress()),
+        ChangeNotifierProvider<Cart>(create: (_) => Cart(),),
       ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<ImageCubit>(create: (_) => ImageCubit(ImageRepositoryImpl()),)
+        ],
+        child: PGSK()),
     ));
 }
 
@@ -62,7 +67,7 @@ class PGSK extends StatelessWidget {
       home: GestureDetector(
         onTap: () =>
             WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-        child: SafeArea(child: HomePage()),
+        child: SafeArea(child: CategoryPage(EntitiesRepositoryImpl())),
       ),
       routes: {
         CheckoutSuccessPage.routeName: (_) => CheckoutSuccessPage(),
@@ -70,7 +75,7 @@ class PGSK extends StatelessWidget {
         UserAccountPage.routeName: (_) => UserAccountPage(),
         SearchPage.routeName: (_) => SearchPage(),
         ExplorePage.routeName: (_) => ExplorePage(),
-        CategoryPage.routeName: (_) => CategoryPage(),
+        CategoryPage.routeName: (_) => CategoryPage(EntitiesRepositoryImpl()),
         GettingStartedPage.routeName: (_) => GettingStartedPage(),
         OnpageLoadingSpinner.routeName: (_) => OnpageLoadingSpinner(),
         HomePage.routeName: (_) => HomePage(),

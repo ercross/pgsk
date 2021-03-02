@@ -1,4 +1,3 @@
-import '../../../controllers/providers/cart.dart';
 import '../../entities/order.dart';
 import '../../entities/product.dart';
 
@@ -11,7 +10,7 @@ abstract class ECommerceServicesRepository {
   ///check Product documentation for info on the field, isCustomer
   Future<bool> writeReviewFor({Product product}); 
 
-  Future<bool> updateCart(Cart cart);
+  Future<List<Product>> fetchCartItems(int userId);
 
   Future<bool> checkout(Order order);
 

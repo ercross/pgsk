@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pgsk/data/repositories_impl/data_repositories_impl/impl_image_repository.dart';
 
-
-import '../../../main.dart';
-import '../category_screen/category_screen.dart';
+import '../../../data/repositories_impl/data_repositories_impl/impl_entities_repository.dart';
+import '../../../data/repositories_impl/data_repositories_impl/impl_image_repository.dart';
+import '../../widgets/custom_cart.dart';
 import 'custom_app_bar.dart';
 import 'custom_nav_bar.dart';
 import 'homepage_categories_section.dart';
@@ -25,45 +24,28 @@ class HomePage extends StatelessWidget {
   Widget _buildMiddleContent({@required BoxConstraints size}) => SizedBox(
         width: size.maxWidth * screenWidthMultiplier,
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
 
-              TVDisplay(
-                imageRepository: ImageRepositoryImpl(),
-                allowedWidth: size.maxWidth * screenWidthMultiplier,
-                allowedHeight: size.maxHeight * 0.22,
-              ),
+                TVDisplay(
+                  imageRepository: ImageRepositoryImpl(),
+                  allowedWidth: size.maxWidth * screenWidthMultiplier,
+                  allowedHeight: size.maxHeight * 0.22,
+                ),
 
-              SizedBox(height: 8,),
-              
-              Expanded(child: _buildCategoriesSection())
-            ]),
+                SizedBox(height: 8,),
+                
+                Expanded(child: _buildCategoriesSection())
+              ]),
       );
 
-  Widget _buildCategoriesSectionHeader () {
-    return Row(
-          children: [
-            Text("Categories", style: PGSK.homepageTexts),
-            Expanded(
-              child: SizedBox(),
-            ),
-            FlatButton(
-                onPressed: () => Navigator.of(ctx)
-                    .pushReplacementNamed(CategoryPage.routeName),
-                child: Text("VIEW ALL",
-                    style: Theme.of(ctx).textTheme.headline4
-                        .copyWith(fontWeight: FontWeight.w600, fontSize: 12, )))
-          ],
-        );
-  }
-
   Widget _buildCategoriesSection() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildCategoriesSectionHeader(),
-        HomePageCategoriesSection()
-      ],
+    return LayoutBuilder(
+            builder: (_, constraints) => HomePageCategoriesSection(
+              entitiesRepository: EntitiesRepositoryImpl(),
+              allowedHeight: constraints.maxHeight,
+              allowedWidth: constraints.maxWidth,
+            ),
     );
   }
 
@@ -86,7 +68,7 @@ class HomePage extends StatelessWidget {
                 CustomAppBar(
                     size: constraints,
                     title: "Discover",
-                    trailing: Icon(Icons.shopping_cart)),
+                    trailing: CustomCart()),
                 Expanded(child: _buildMiddleContent(size: constraints)),
                 CustomBottomNavBar(constraints.maxWidth, context),
               ],

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pgsk/views/screens/checkout_screen/checkout_screen.dart';
+import 'package:pgsk/views/screens/home_screen/custom_app_bar.dart';
 
 import '../../../../core/entities/product.dart';
 import '../../../../main.dart';
@@ -8,51 +9,16 @@ import '../../../widgets/gradient_colored_long_action_button.dart';
 import '../../home_screen/homepage.dart';
 import 'product_card_cart_screen.dart';
 
+
+///CartPage contains the cartpage. If size is omitted, CartPage is rendered as a full page through scaffold
 class CartPage extends StatelessWidget {
+
   final BoxConstraints size;
-  CartPage(this.size);
-
-  static const String prefix = "assets/images/";
-    static final List<Product> _products = [
-      Product(
-        id: 1.toString(),
-        name: "Avast Antivirus",
-        price: 40,
-        specification: "",
-        description: "",
-        categoryName: "Antivirus Protection",
-        imageUrl: prefix + "product_1_avast.png"
-      ),
-
-      Product(
-        id: 2.toString(),
-        name: "Quick Heal Antivirus",
-        price: 50,
-        specification: "",
-        description: "",
-        categoryName: "Internet Protection",
-        imageUrl: prefix + "product_2_quickheal.png"
-      ),
-
-      Product(
-        id: 2.toString(),
-        name: "Kaspersky Antivirus",
-        price: 75,
-        specification: "",
-        description: "",
-        categoryName: "Internet Protection",
-        imageUrl: prefix + "product_3_kaspersky.png"
-      ),
-    ];
-
-  final List<Product> _moreProducts = [
-    ..._products.getRange(0,1),
-    ..._products.getRange(1,2),
-    ..._products,
-    ..._products.getRange(0,2),
-  ];
+  CartPage([this.size]);
 
   Widget _buildCartItems(List<ProductAndQuantity> productAndQuantity){
+
+    BuildContext ctx;
     final List<ProductCardCartPage> productCards = List<ProductCardCartPage>();
 
     for(int i=0; i<productAndQuantity.length ; i++) {
@@ -96,8 +62,6 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  BuildContext ctx;
-
   Widget _buildAPriceRow(String title, double price) {
     return Row(
       children: [
@@ -108,17 +72,12 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final moreProducts = List<Product>.from(_moreProducts);
-    List<ProductAndQuantity> products = ProductAndQuantity.from(products: moreProducts);
-    print(products);
-    ctx = context;
+  Widget _buildCartTabView(List<ProductAndQuantity> products, {double width}) {
     return Column(
       children: [
         Center(child: SizedBox(
-          height: size.maxHeight * 0.4,
-          width: size.maxWidth * 0.85,
+          height: size != null ? size.maxHeight * 0.4 : null,
+          width: width != null ? width : size.maxWidth * HomePage.screenWidthMultiplier,
           child: _buildCartItems(products))),
         Expanded(
           child: _buildPriceBreakdown(
@@ -130,6 +89,32 @@ class CartPage extends StatelessWidget {
         )
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final moreProducts = List<Product>.from(_moreProducts);
+    List<ProductAndQuantity> products = ProductAndQuantity.from(products: moreProducts);
+    ctx = context;
+
+    //if size is null, then cart page should be rendered as a full page
+    if (size == null) {
+      return Scaffold(
+        body: LayoutBuilder(
+        builder: (ctx, constraints) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              CustomAppBar(size: constraints, title: "Cart", trailing: SizedBox()),
+              _buildCartTabView(products, width: constraints.maxWidth * HomePage.screenWidthMultiplier)
+            ]
+          );
+        }
+        )
+      );
+    }
+
+    return _buildCartTabView(products);
   }
 }
 

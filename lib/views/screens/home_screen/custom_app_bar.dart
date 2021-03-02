@@ -4,7 +4,7 @@ class CustomAppBar extends StatelessWidget {
   final String title;
   final Widget leading;
   final Widget trailing;
-  final BoxConstraints size;
+  final BoxConstraints size; //the size of the total page
   final String centerTitle;
 
   ///CustomAppBar is the app bar used in PGSK mobile app
@@ -21,9 +21,10 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: size.maxHeight * 0.065),
+        SizedBox(height: size.maxHeight * 0.06),
         Container(
           width: size.maxWidth,
+          height: size.maxHeight * 0.062,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -40,11 +41,15 @@ class CustomAppBar extends StatelessWidget {
               Expanded(child: SizedBox(),),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: trailing,
+                child: SizedBox(
+                  width: size.maxHeight * 0.1,
+                  child: trailing
+                ),
               ),
             ],
           )
         ),
+        SizedBox(height: size.maxHeight * 0.01)
       ],
     );
   }

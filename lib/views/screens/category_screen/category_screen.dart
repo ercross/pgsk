@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pgsk/views/screens/category_screen/product_card_category_page.dart';
-import 'package:pgsk/views/screens/home_screen/homepage.dart';
-import '../../../core/entities/product.dart';
-import '../../../core/entities/product_category.dart';
+import 'package:pgsk/views/widgets/custom_cart.dart';
+import '../../../core/repositories/data_repositories/entities_repository.dart';
 
+import '../../../core/entities/product.dart';
 import '../home_screen/custom_app_bar.dart';
 import '../home_screen/custom_nav_bar.dart';
+import '../home_screen/homepage.dart';
+import 'product_card_category_page.dart';
 
 class CategoryPage extends StatefulWidget {
   static const String routeName = "/category";
 
-  const CategoryPage();
+  final EntitiesRepository entitiesRepository;
+
+  const CategoryPage(this.entitiesRepository);
 
   @override
   _CategoryPageState createState() => _CategoryPageState();
@@ -27,6 +30,16 @@ class _CategoryPageState extends State<CategoryPage> {
     "Business Solutions",
     "Family Solutions"
   ];
+
+  List<Product> _products;
+
+  @override
+  void initState() { 
+    super.initState();
+    widget.entitiesRepository.fetchAllProducts().then(
+      (products) => setState(() { _products = products;})
+    ).catchError((error) => setState(() =>_products = List<Product>()));
+  }
 
   static BuildContext ctx;
 
@@ -79,91 +92,27 @@ class _CategoryPageState extends State<CategoryPage> {
     ),
   );
 
-  Widget _buildFilterButton() => GestureDetector(
-    onTap: () {},
-    child:Container(
-      height: 30,
-      width: 35,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme.of(ctx).primaryColor,
-                Theme.of(ctx).primaryColorLight,
-              ],
-          )
-      ),
-      child: Icon(Icons.filter_tilt_shift_rounded, color: Colors.white)
-  ));
-
-  static const String prefix = "assets/images/";
-    static final List<Product> _products = [
-      Product(
-        id: 1.toString(),
-        name: "Avast Antivirus",
-        price: 40,
-        specification: "",
-        description: "",
-        categoryName: "Antivirus Protection",
-        imageUrl: prefix + "product_1_avast.png"
-      ),
-
-      Product(
-        id: 2.toString(),
-        name: "Quick Heal Antivirus",
-        price: 50,
-        specification: "",
-        description: "",
-        categoryName: "Internet Protection",
-        imageUrl: prefix + "product_2_quickheal.png"
-      ),
-    ];
-
-  final List<Product> _moreProducts = [
-    ..._products,
-    ..._products,
-    ..._products,
-    ..._products,
-    ..._products,
-    ..._products,
-  ];
-
   Widget _buildMiddleContent(BoxConstraints size) {
     final double desiredWidth = size.maxWidth * HomePage.screenWidthMultiplier;
-    final double widthPerRow = desiredWidth / 2.1; //the 0.1 accounts for padding and spacing 
 
     return SizedBox(
     width: desiredWidth,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    child: ListView(
       children: [
-        SizedBox(
-          width: widthPerRow,
-          child: ListView(
-            children: _moreProducts.map((product) => 
-              ProductCardCategoryPage(product: product, width: size.maxWidth)).toList(),
+        ..._products.map((product) => 
+              ProductCardCategoryPage(
+                product: product, 
+                width: size.maxWidth,
+                height: size.maxHeight * 0.2,
+                )).toList(),]
           ),
-        ),
-        SizedBox(
-          width: widthPerRow,
-          child: ListView(
-            children: [
-              Container(color: Colors.white, height: size.maxHeight * 0.04),
-              ..._moreProducts.map((product) => 
-              ProductCardCategoryPage(product: product, width: size.maxWidth)).toList()
-            ] 
-          ),
-        )
-      ],
-    ),
-  );
+      );
   } 
 
   @override
   Widget build(BuildContext context) {
     ctx = context;
+    if (_products == null || _products.isEmpty) return SizedBox();
     return Scaffold(
       body: LayoutBuilder(
         builder: (ctx, constraints) {
@@ -174,7 +123,10 @@ class _CategoryPageState extends State<CategoryPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                CustomAppBar(size: constraints, title: _title, trailing: _buildFilterButton()),
+                CustomAppBar(
+                  size: constraints, 
+                  title: _title, 
+                  trailing: CustomCart()),
                 _buildCategoriesListView(constraints),
                 Expanded(child: _buildMiddleContent(constraints)),
                 CustomBottomNavBar(constraints.maxWidth, context),

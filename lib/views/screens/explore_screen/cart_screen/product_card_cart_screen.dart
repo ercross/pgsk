@@ -4,7 +4,7 @@ import '../../../../core/entities/product.dart';
 import '../../../../main.dart';
 
 
-class ProductCardCartPage extends StatefulWidget {
+class ProductCardCartPage extends StatelessWidget {
   final int quantity;
 
   ///containerHeight is the height of the container displaying a product
@@ -18,21 +18,15 @@ class ProductCardCartPage extends StatefulWidget {
   });
 
   @override
-  _ProductCardCartPageState createState() => _ProductCardCartPageState();
-}
-
-class _ProductCardCartPageState extends State<ProductCardCartPage> {
-
-  @override
   Widget build(BuildContext context) {
 
     final Widget titleAndPrice = RichText(
             text: TextSpan(
-              text: widget.product.name + "\n\n",
+              text: product.name + "\n\n",
               style: Theme.of(context).textTheme.caption.copyWith(fontSize: 11, color: Colors.black),
               children: [
                 TextSpan(
-                  text: "${PGSK.currency}${widget.product.price.toStringAsFixed(0)}",
+                  text: "${PGSK.currency}${product.price.toStringAsFixed(0)}",
                   style: Theme.of(context).textTheme.caption
                 )
               ]
@@ -51,7 +45,7 @@ class _ProductCardCartPageState extends State<ProductCardCartPage> {
     return Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(15),
-      height: widget.containerheight /* * 0.14 */,
+      height: containerheight /* * 0.14 */,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         boxShadow: [BoxShadow()],
@@ -59,7 +53,7 @@ class _ProductCardCartPageState extends State<ProductCardCartPage> {
       ),
       child: Row(
         children: [
-          Image.asset(widget.product.imageUrl),
+          Image.asset(product.imageUrl),
           titleAndPrice,
           Flexible(child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -68,7 +62,7 @@ class _ProductCardCartPageState extends State<ProductCardCartPage> {
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomRight, 
-                  child: Text ("Quantity: ${widget.quantity}\n", 
+                  child: Text ("Quantity: ${quantity}\n", 
                     style: Theme.of(context).textTheme.caption.copyWith(color : Theme.of(context).primaryColor),
                   ),),
               )

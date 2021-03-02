@@ -9,16 +9,27 @@ import '../../entities/product_review.dart';
 ///Repository for entities specific to each user, wishlist and cart, 
 ///is contained within user_account_services_repository.dart
 abstract class EntitiesRepository {
+
+  // ************************************** PRODUCT FUNCTIONS **********************************/
   Future<List<Product>> fetchAllProducts();
+
+  ///refreshProductInfo refetches @param product from the server to avoid any discrepancies in price
+  Future<Product> refreshProductInfo(Product product);
 
   Future<List<Product>> fetchProductsByCategory(String categoryName);
 
+
+  // ************************************* PRODUCTCATEGORY FUNTCIONS ***************************/
   Future<List<String>> fetchAllCategoriesName();
 
   Future<List<ProductCategory>> fetchAllProductCategories();
 
+
+  // ************************************ ORDER FUNCTIONS ************************************/
   Future<List<Order>> fetchAllOrders();
 
+
+  // ************************************ REVIEWS FUNCTIONS *********************************/
   Future<List<ProductReview>> fetchReviewsByProductName();
 
   Future<List<ProductReview>> fetchReviewsWrittenByMe();

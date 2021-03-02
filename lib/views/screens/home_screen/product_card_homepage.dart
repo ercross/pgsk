@@ -75,7 +75,7 @@ class ProductCardHomePage extends StatelessWidget {
                 ? GradientColoredLongActionButton(
                     text: buttonActionWord,
                     onPressed: () {},
-                    width: width * 0.21,
+                    width: width * 0.25,
                     height: height * 0.034)
                 : SizedBox()
           ],

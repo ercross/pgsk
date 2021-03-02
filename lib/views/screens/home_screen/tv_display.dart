@@ -3,17 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../core/repositories/data_repositories/image_repository.dart';
-
+import '../../../data/constants.dart';
+import 'homepage.dart';
 
 class TVDisplay extends StatefulWidget {
   final ImageRepository imageRepository;
   final double allowedHeight;
   final double allowedWidth;
 
-  const TVDisplay(
-      {@required this.imageRepository,
-      @required this.allowedHeight,
-      @required this.allowedWidth});
+  const TVDisplay({
+    @required this.imageRepository,
+    @required this.allowedHeight,
+    @required this.allowedWidth
+  });
 
   @override
   _TVDisplayState createState() => _TVDisplayState();
@@ -45,8 +47,12 @@ class _TVDisplayState extends State<TVDisplay> {
   @override
   void initState() {
     super.initState();
-    //TODO: use future
-    //widget.imageRepository.fetchFromUrls().then((fetchedImages) => _images = fetchedImages);
+    widget.imageRepository.fetchFromUrls(
+      imagesUrls: Constants.homepageTVImagesUrls,
+      displayHeight: HomePage.deviceHeight * 0.22, 
+      displayWidth: HomePage.deviceWidth * HomePage.screenWidthMultiplier)
+        .then((fetchedImages) => setState(() => _images = fetchedImages))
+        .catchError((error) => setState(() => _images = List<Image>()));
   }
 
   @override
@@ -60,8 +66,7 @@ class _TVDisplayState extends State<TVDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    _images = widget.imageRepository.fetchFromUrls();
-
+    
     if (_images == null || _images.isEmpty) return SizedBox();
 
     else if (_isTimerStarted == false) {
@@ -77,6 +82,19 @@ class _TVDisplayState extends State<TVDisplay> {
   }
 
   Widget _buildTV() {
+    return _buildSwipeDetector(
+      onChild: Container(
+          margin: EdgeInsets.only(top: 12),
+          width: widget.allowedWidth,
+          height: widget.allowedHeight,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: _currentlyDisplayedImage),
+    );
+  }
+
+  Widget _buildSwipeDetector({@required Widget onChild}) {
     return GestureDetector(
       onHorizontalDragUpdate: (dragDetails) {
         if (dragDetails.delta.dx > 0) {
@@ -108,15 +126,7 @@ class _TVDisplayState extends State<TVDisplay> {
 
         }
       },
-      child: Container(
-          margin: EdgeInsets.only(top: 12),
-          width: widget.allowedWidth,
-          height: widget.allowedHeight,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: _currentlyDisplayedImage),
-    );
+      child: onChild);
   }
 
   Widget _buildIndicatorsButtonBar() {

@@ -1,47 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:pgsk/core/entities/product.dart';
+import '../../../core/repositories/data_repositories/entities_repository.dart';
+import '../category_screen/category_screen.dart';
 
 import '../../../core/entities/product_category.dart';
+import '../../../main.dart';
 import 'homepage.dart';
 import 'product_card_homepage.dart';
 
 class HomePageCategoriesSection extends StatefulWidget {
+  final EntitiesRepository entitiesRepository;
   final double allowedWidth;
   final double allowedHeight;
 
-  HomePageCategoriesSection({@required this.allowedHeight, @required this.allowedWidth}) ;
+  HomePageCategoriesSection({
+    @required this.entitiesRepository,
+    @required this.allowedHeight, 
+    @required this.allowedWidth
+  });
 
   @override
-  _HomePageCategoriesSectionState createState() => _HomePageCategoriesSectionState();
+  _HomePageCategoriesSectionState createState() =>
+      _HomePageCategoriesSectionState();
 }
 
 class _HomePageCategoriesSectionState extends State<HomePageCategoriesSection> {
 
-  final String _prefix = "assets/images/";
-
   ///activeCategory is the category whose products are currently on display on the homepage
   int _activeCategory = 0;
-  List<ProductCategory> _categories = List<ProductCategory>();
+
+
+  List<ProductCategory> _categories;
   ProductCategory _categoryCurrentlyOnDisplay;
 
+  //TODO: print error type on screen
+  @override
+  void initState() { 
+    super.initState();
+    widget.entitiesRepository.fetchAllProductCategories()
+      .then((fetchedCategories) { 
+        setState(() {
+          _categories = fetchedCategories;          
+          _categoryCurrentlyOnDisplay = _categories[_activeCategory];
+        });
+        })
+      .catchError((error) => _categories = List<ProductCategory>());
+  }
+
+  Widget _buildCurrentCategoryName() {
+    return Row(
+      children: [
+        Text(
+          _categoryCurrentlyOnDisplay.name,
+          style: PGSK.homepageTexts,
+        ),
+        Expanded(child: SizedBox()),
+        Text("VIEW PRODUCTS",
+            style: Theme.of(context).textTheme.headline4
+                .copyWith(fontWeight: FontWeight.w700, fontSize:12))
+      ],
+    );
+  }
+
   Widget _buildCategoryContent() {
-    Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: SingleChildScrollView(
-                  child: Row(
-                    children: [
-                      Text(
-                        "Special Sales Offers",
-                        style: PGSK.homepageTexts,
-                      ),
-                      Expanded(child: SizedBox()),
-                      Text("VIEW ALL",
-                          style: PGSK.homepageTexts.copyWith(
-                              fontWeight: FontWeight.w600, fontSize: 12))
-                    ],
-                  ),
-                ),
-              );
+    return LayoutBuilder(
+      builder: (_, constraint) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: constraint.maxHeight,
+            width: constraint.maxWidth,
+            child: Column(
+              children: [
+                _buildCurrentCategoryName(),
+                Expanded(child: _buildCategoryProducts()),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryProducts() {
+    return ListView(
+          children: _categoryCurrentlyOnDisplay.products.map<ProductCardHomePage>(
+            (product) => ProductCardHomePage(
+              product: product,
+              width: widget.allowedWidth,
+              height: widget.allowedHeight * 2,
+              )).toList(),
+        );
+  
   }
 
   Widget _buildShapedCategory({
@@ -49,23 +98,23 @@ class _HomePageCategoriesSectionState extends State<HomePageCategoriesSection> {
     @required String imageUrl,
     @required String imageLabel,
   }) {
-    
     final bool isActive = index == _activeCategory;
 
     return GestureDetector(
-      onTap: () =>  setState(() => _activeCategory = index),
+      onTap: () => setState(() => _activeCategory = index),
       child: Container(
-        height: widget.allowedHeight * 0.125,
-        width: (widget.allowedWidth * HomePage.screenWidthMultiplier) / 4.2,
-        margin: EdgeInsets.symmetric(vertical: 13),
+        //The size of the balls is controlled by this width and buildShapedCategories.SizedBox().height
+        width: (widget.allowedWidth * HomePage.screenWidthMultiplier) / 3.9,
+        margin: EdgeInsets.only(right: 5, left: 5, top: 5),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(imageUrl),
-            Text(imageLabel,
-                style: Theme.of(context).textTheme.caption.copyWith(
-                    fontSize: 9, color: isActive ? Colors.white : Colors.black))
+            Expanded(
+              child: Text(imageLabel,
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                      fontSize: 9, color: Colors.white,)),
+            )
           ],
         ),
         decoration: BoxDecoration(
@@ -83,44 +132,53 @@ class _HomePageCategoriesSectionState extends State<HomePageCategoriesSection> {
   }
 
   Widget _buildShapedCategories() {
-    SizedBox(
-          width: widget.allowedWidth,
-          child: SingleChildScrollView(
-            child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildShapedCategory(
-                      index: 0,
-                      imageUrl: _prefix + "family_solution_circled.png",
-                      imageLabel: "Family"),
-
-                  _buildShapedCategory(
-                      index: 1,
-                      imageUrl: _prefix + "business_solution_circled.png",
-                      imageLabel: "Business"),
-
-                  _buildShapedCategory(
-                      index: 2,
-                      imageUrl: _prefix + "mobile_solution_circled.png",
-                      imageLabel: "Mobile"),
-
-                  _buildShapedCategory(
-                      index: 3,
-                      imageUrl: _prefix + "internet_security_circled.png",
-                      imageLabel: "Internet")
-                ]),
+    List<Widget> categoriesW = List<Widget>();
+    for(int i=0; i<_categories.length; i++) {
+      categoriesW.add(_buildShapedCategory(
+        imageLabel: _categories[i].name,
+        imageUrl: _categories[i].imageUrl,
+        index: i
+      ));
+    }
+    return SizedBox(
+      width: widget.allowedWidth,
+      height: widget.allowedHeight * 0.2,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: categoriesW,
           ),
-        );  
+    );
+  }
+
+  Widget _buildCategoriesSectionHeader () {
+    return Row(
+          children: [
+            Text("Categories", style: PGSK.homepageTexts),
+            Expanded(
+              child: SizedBox(),
+            ),
+            GestureDetector(
+              onTap: () => Navigator.of(context).pushReplacementNamed(CategoryPage.routeName),
+              child: Text("VIEW ALL", textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.headline4
+                      .copyWith(fontWeight: FontWeight.w700, fontSize: 12, )),
+            )
+          ],
+        );
   }
 
   @override
   Widget build(BuildContext context) {
+    if(_categories == null || _categories.isEmpty) return SizedBox();
+    _categoryCurrentlyOnDisplay = _categories[_activeCategory];
     return Column(
       children: [
+        _buildCategoriesSectionHeader(),
         _buildShapedCategories(),
-
+        SizedBox(height: 10,),
+        Expanded(child: _buildCategoryContent())
       ],
     );
   }
 }
+
