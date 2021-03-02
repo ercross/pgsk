@@ -10,7 +10,9 @@ abstract class ECommerceServicesRepository {
   ///check Product documentation for info on the field, isCustomer
   Future<bool> writeReviewFor({Product product}); 
 
-  Future<List<Product>> fetchCartItems(int userId);
+  ///fetchCartItems fetches cart items for this user from PGSK server
+  ///concrete implementations should inject user id from the local storage
+  Future<List<Product>> fetchCartItems();
 
   Future<bool> checkout(Order order);
 

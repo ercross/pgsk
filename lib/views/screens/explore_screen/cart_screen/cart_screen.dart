@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:pgsk/controllers/providers/cart.dart';
 import 'package:pgsk/views/screens/checkout_screen/checkout_screen.dart';
 import 'package:pgsk/views/screens/home_screen/custom_app_bar.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/entities/product.dart';
 import '../../../../main.dart';
@@ -15,10 +17,10 @@ class CartPage extends StatelessWidget {
 
   final BoxConstraints size;
   CartPage([this.size]);
+  BuildContext ctx;
 
   Widget _buildCartItems(List<ProductAndQuantity> productAndQuantity){
 
-    BuildContext ctx;
     final List<ProductCardCartPage> productCards = List<ProductCardCartPage>();
 
     for(int i=0; i<productAndQuantity.length ; i++) {
@@ -72,7 +74,10 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCartTabView(List<ProductAndQuantity> products, {double width}) {
+  ///if width is non-null, then buildCartTabView is to be rendered as a full page.
+  ///else, its width is determined by the parent widget, which is explore_screen
+  ///@Total is = subTotal, which is just the total sum of all products in cart
+  Widget _buildCartTabView(List<ProductAndQuantity> products, {@required double total, double width}) {
     return Column(
       children: [
         Center(child: SizedBox(
@@ -81,7 +86,7 @@ class CartPage extends StatelessWidget {
           child: _buildCartItems(products))),
         Expanded(
           child: _buildPriceBreakdown(
-            subTotal: 160,
+            subTotal: total,
             shippingFee: 9.90,
             tax: 6.50,
             total: 185.40
@@ -93,8 +98,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final moreProducts = List<Product>.from(_moreProducts);
-    List<ProductAndQuantity> products = ProductAndQuantity.from(products: moreProducts);
+    final Cart cartProvider = Provider.of<Cart>(context);
     ctx = context;
 
     //if size is null, then cart page should be rendered as a full page
@@ -106,7 +110,9 @@ class CartPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               CustomAppBar(size: constraints, title: "Cart", trailing: SizedBox()),
-              _buildCartTabView(products, width: constraints.maxWidth * HomePage.screenWidthMultiplier)
+              _buildCartTabView(cartProvider.productsAndQuantity, 
+                total: cartProvider.total,
+                width: constraints.maxWidth * HomePage.screenWidthMultiplier)
             ]
           );
         }
@@ -114,7 +120,7 @@ class CartPage extends StatelessWidget {
       );
     }
 
-    return _buildCartTabView(products);
+    return _buildCartTabView(cartProvider.productsAndQuantity, total: cartProvider.total);
   }
 }
 

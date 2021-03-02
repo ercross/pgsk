@@ -20,13 +20,13 @@ class CustomCart extends StatelessWidget {
             Positioned(
               top: 20,
               right: 14,
-              child: Icon(Icons.shopping_cart_rounded, color: Colors.black,)),
+              child: Icon(Icons.shopping_cart_rounded, size: 30, color: Colors.black,)),
             Positioned(
               right: 3,
               top: 0,
               child: Container(
-                width: 20,
-                padding: EdgeInsets.all(8),
+                //width: 20, TODO: remove this code if widget renders fine
+                padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Theme.of(context).accentColor

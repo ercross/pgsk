@@ -4,7 +4,8 @@ import '../../controllers/providers/cart.dart';
 import '../../core/entities/order.dart';
 import '../../core/entities/product.dart';
 import '../../core/entities/user.dart';
-import '../../core/repositories/data_repositories/user_account_services_repository.dart';
+import '../../core/repositories/services_repository/user_account_services_repository.dart';
+
 
 
 
@@ -14,21 +15,15 @@ class _UserAccount{
 
   ///info is made non-final so user can change their info without altering existing account details
   UserInfo info;
-  final Cart cart;
-  final List<Order> orders;
-  final List<Product> wishlist;
 
   ///UserAccount is the singleton account associated with this user. 
   ///It is automatically instantiated when the app is started for the first time
   ///At that point, this.info is null
-  _UserAccount._(this.info, {this.cart, this.orders, this.wishlist});
+  _UserAccount._(this.info);
 
   //fromMap is placed here rather than inside a UserAccountModel class because _userAccount is private
   _UserAccount.from(Map<String, dynamic> json) :
-      info = json['info'],
-      cart = json['cart'],
-      orders = json['orders'],
-      wishlist = json['wishlist'];
+      info = json['info'];
     
 }
 
@@ -59,9 +54,7 @@ class AccountFactory with ChangeNotifier{
 
   ///createUserAccount creates a new account. 
   void createUserAccount(UserInfo info, {Cart cart, List<Order> orders, List<Product> wishlist}) {
-    account = _UserAccount._(info, cart: cart ?? Cart(), 
-                      orders: orders ?? new List<Order>(), 
-                      wishlist: wishlist ?? new List<Product>());
+    account = _UserAccount._(info);
     notifyListeners();
   }
 

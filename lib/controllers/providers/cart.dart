@@ -6,9 +6,13 @@ import '../../views/screens/explore_screen/cart_screen/cart_screen.dart';
 
 ///Cart doesn't extends Equatable as Cart is implemented as a singleton
 class Cart with ChangeNotifier{
-  int totalNumberOfProducts = 0;
-  final List<ProductAndQuantity> productsAndQuantity = List<ProductAndQuantity>();
-  double total = 0;
+  int _totalNumberOfProducts = 0;
+  List<ProductAndQuantity> _productsAndQuantity = List<ProductAndQuantity>();
+  double _total = 0;
+
+  int get totalNumberOfProducts => _totalNumberOfProducts;
+  List<ProductAndQuantity> get productsAndQuantity => _productsAndQuantity;
+  double get total => _total;
 
   ///uniqueProducts is like a Set, but customise for this particular use case
   ///i.e., to get a
@@ -29,8 +33,8 @@ class Cart with ChangeNotifier{
       _uniqueProducts.add(product);
     } 
 
-    totalNumberOfProducts++;
-    total += product.price;
+    _totalNumberOfProducts++;
+    _total += product.price;
     notifyListeners();
   }
 
@@ -46,15 +50,20 @@ class Cart with ChangeNotifier{
       } 
       else productAndQuantity.quantity--;
 
-      totalNumberOfProducts--;
-      total -= product.price;
+      _totalNumberOfProducts--;
+      _total -= product.price;
       notifyListeners();
     }
   }
 
-  //TODO: fetches cart products at first start
-  void fetchMyCart() {
-
+  void fetchMyCart() async {
+    if (_totalNumberOfProducts == 0 && _total == 0 && _productsAndQuantity.isEmpty) {
+      List<Product> products = await repository.fetchCartItems();
+      _totalNumberOfProducts = products.length;
+      products.forEach((product) => _total += product.price);
+      _productsAndQuantity = ProductAndQuantity.from(products: products);  
+      notifyListeners();
+    }
   }
 
   //TODO: implement to resync the price of these products with the PGSK server
