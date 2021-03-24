@@ -1,6 +1,6 @@
-import 'package:pgsk/core/entities/product.dart';
+import '../../../core/entities/product.dart';
 
-import 'package:pgsk/core/entities/order.dart';
+import '../../../core/entities/order.dart';
 
 import '../../../core/repositories/services_repository/e_commerce_services_repository.dart';
 
@@ -45,5 +45,4 @@ class ECommerceServicesRepositoryImpl extends ECommerceServicesRepository {
   Future<Set<Product>> fetchWishlistItems() {
     return Future.value(null);
   }
-
 }

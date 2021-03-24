@@ -1,74 +1,108 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../controllers/providers/authentication_tab_index.dart';
+import '../../../main.dart';
 import 'sign_in.dart';
 import 'sign_up.dart';
 
-class AuthenticationPage extends StatelessWidget {
+class AuthenticationPage extends StatefulWidget {
   static const String routeName = "/authentication";
 
-  const AuthenticationPage();
+  AuthenticationPage();
 
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider<AuthenticationTabIndex>(
-             create:(_) => AuthenticationTabIndex(),
-              child: AuthenticationTabs()
-    );
+  _AuthenticationPageState createState() => _AuthenticationPageState();
 }
 
-class AuthenticationTabs extends StatefulWidget {
+class _AuthenticationPageState extends State<AuthenticationPage> {
+  int currentTab = 0;
+  PageController _controller = PageController(initialPage: 0);
 
-  const AuthenticationTabs();
+  Widget _buildTab(
+      {@required String label,
+      @required double pageWidth,
+      @required bool isActive,
+      @required int tabIndex}) {
+    return Container(
+        width: pageWidth / 2,
+        decoration: BoxDecoration(
+          color: isActive ? Colors.white70 : Colors.white,
+          border: tabIndex == 1
+              ? Border(left: BorderSide(color: Colors.white))
+              : Border(right: BorderSide(color: Colors.white)),
+        ),
+        child: TextButton(
+          child: Text(label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  color:
+                      isActive ? Theme.of(context).accentColor : Colors.grey)),
+          onPressed: () => setState(() {
+            currentTab = tabIndex;
+            _controller.jumpToPage(tabIndex);
+          }),
+        ));
+  }
 
-  @override
-  _AuthenticationTabsState createState() => _AuthenticationTabsState();
-}
-
-class _AuthenticationTabsState extends State<AuthenticationTabs> {
   @override
   Widget build(BuildContext context) {
-    final double pageHeight = MediaQuery.of(context).size.height;
-    final double pageWidth = MediaQuery.of(context).size.width;
-    final double toolbarHeight = pageHeight * 0.15;
-
-    ///tabViewHeight is the height of the container within which sign-in and sign-up pages are rendered
-    final double tabViewHeight = pageHeight * 0.85;
-    final double tabViewWidth = pageWidth;
-
-    final AuthenticationTabIndex indexProvider = Provider.of<AuthenticationTabIndex>(context);
-
-    return DefaultTabController(
-        initialIndex: indexProvider.value,
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: toolbarHeight,
-            elevation: 0,
-
-            flexibleSpace: Image.asset("assets/images/splash_screen_background.png",
+    return PGSK.buildFullPage(child: LayoutBuilder(
+      builder: (_, constraints) {
+        return Column(
+          children: [
+            Stack(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              fit: StackFit.passthrough,
+              children: [
+                Image.asset(
+                  "assets/images/splash_screen_background.png",
                   fit: BoxFit.fitWidth,
-                  width: pageWidth,
-                  height: pageHeight, ),
-            backgroundColor: Colors.white60,
-            bottom: TabBar(
-
-              indicator: BoxDecoration(
-              color: Colors.white24,
-            ),
-              tabs: [
-                Tab(child: Text("Sign In") ,),
-                Tab(child: Text("Sign Up"))
+                  width: constraints.maxWidth,
+                  height: constraints.maxHeight * 0.2,
+                ),
+                Positioned(
+                  top: constraints.maxHeight * 0.14,
+                  right: 0,
+                  left: 0,
+                  child: Row(
+                    children: [
+                      _buildTab(
+                          pageWidth: constraints.maxWidth,
+                          label: "Sign In",
+                          isActive: currentTab == 0,
+                          tabIndex: 0),
+                      _buildTab(
+                          pageWidth: constraints.maxWidth,
+                          label: "Sign Up",
+                          isActive: currentTab == 1,
+                          tabIndex: 1)
+                    ],
+                  ),
+                ),
               ],
-            )),
-            body: 
-               TabBarView(
+            ),
+            Expanded(
+              child: PageView(
+                onPageChanged: (newTabIndex) =>
+                    setState(() => currentTab = newTabIndex),
+                controller: _controller,
                 children: [
-                  SignInTab(viewportHeight: tabViewHeight, viewportWidth: tabViewWidth, tabIndexProvider: indexProvider,),
-                  SignUpTab(viewportHeight: tabViewHeight, viewportWidth: tabViewWidth, tabIndexProvider: indexProvider)
-                ],),
-            )
-        
-    );
+                  SignInTab(
+                    viewportHeight: constraints.maxHeight * 0.9,
+                    viewportWidth: constraints.maxWidth,
+                    pageController: _controller,
+                  ),
+                  SignUpTab(
+                    viewportHeight: constraints.maxHeight * 0.9,
+                    viewportWidth: constraints.maxWidth,
+                    pageController: _controller,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    ));
   }
 }

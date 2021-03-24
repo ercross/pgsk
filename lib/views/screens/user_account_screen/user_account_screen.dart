@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pgsk/core/entities/product.dart';
-import 'package:pgsk/core/entities/product_category.dart';
-import 'package:pgsk/views/screens/home_screen/product_card_homepage.dart';
+import '../../../core/entities/product.dart';
+import '../home_screen/product_card_homepage.dart';
 
 import '../home_screen/custom_nav_bar.dart';
 import '../home_screen/homepage.dart';
@@ -35,7 +34,7 @@ class UserAccountPage extends StatelessWidget {
     );
 
     return Stack(
-      overflow: Overflow.visible,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       children: [Image.asset("assets/images/profile_pics.png"), editIcon],
     );
   }
@@ -94,58 +93,6 @@ class UserAccountPage extends StatelessWidget {
     );
   }
 
-  static const String prefix = "assets/images/";
-  final List<Product> staticProducts = [
-    Product(
-        id: 1.toString(),
-        name: "Avast Antivirus",
-        price: 40,
-        specification: "",
-        description: "",
-        categoryName: "Antivirus Protection",
-        imageUrl: prefix + "product_1_avast.png"),
-
-    Product(
-        id: 2.toString(),
-        name: "Quick Heal Antivirus",
-        price: 50,
-        specification: "",
-        description: "",
-        categoryName: "Internet Protection",
-        imageUrl: prefix + "product_2_quickheal.png"),
-
-    Product(
-        id: 3.toString(),
-        name: "Kaspersky Antivirus",
-        price: 60,
-        specification: "",
-        description: "",
-        categoryName: "Antivirus Protection",
-        imageUrl: prefix + "product_3_kaspersky.png"),
-  ];
-
-  Widget _buildWishlist(
-      {@required List<Product> products, @required BoxConstraints size}) {
-    final Widget title = Center(
-        child: Text("Wishlist",
-            style: PGSK.homepageTexts
-                .copyWith(color: Theme.of(ctx).accentColor.withOpacity(0.8))));
-
-    return ListView(
-      children: [
-        title,
-        ...products
-            .map<ProductCardHomePage>((product) => ProductCardHomePage(
-                  buttonActionWord: "BUY",
-                  product: product,
-                  width: size.maxWidth,
-                  height: size.maxHeight
-                ))
-            .toList()
-      ],
-    );
-  }
-
   Widget _buildMiddleContent(BoxConstraints size) {
     return SizedBox(
       width: size.maxWidth * HomePage.screenWidthMultiplier,
@@ -158,11 +105,7 @@ class UserAccountPage extends StatelessWidget {
             height: 15,
           ),
           Expanded(
-            child: Column(
-              children: [
-                _buildUserInfo(), 
-                SizedBox(height: 10),
-                Expanded(child: _buildWishlist(size: size, products: staticProducts))]),
+            child: _buildUserInfo(),
           )
         ],
       ),

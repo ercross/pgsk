@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
-import 'package:pgsk/controllers/providers/cart.dart';
-import 'package:pgsk/views/screens/checkout_screen/checkout_screen.dart';
-import 'package:pgsk/views/screens/home_screen/custom_app_bar.dart';
+import '../../../../controllers/providers/cart.dart';
+import '../../checkout_screen/checkout_screen.dart';
+import '../../home_screen/custom_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/entities/product.dart';
@@ -11,65 +10,92 @@ import '../../../widgets/gradient_colored_long_action_button.dart';
 import '../../home_screen/homepage.dart';
 import 'product_card_cart_screen.dart';
 
-
 ///CartPage contains the cartpage. If size is omitted, CartPage is rendered as a full page through scaffold
 class CartPage extends StatelessWidget {
+  final bool isFullPage;
 
-  final BoxConstraints size;
-  CartPage([this.size]);
+  CartPage({@required this.isFullPage});
+
   BuildContext ctx;
 
-  Widget _buildCartItems(List<ProductAndQuantity> productAndQuantity){
+  Widget _buildCartItems(List<ProductAndQuantity> productAndQuantity,
+      {@required double maxHeight}) {
+    final List<ProductCardCartPage> productCards = [];
 
-    final List<ProductCardCartPage> productCards = List<ProductCardCartPage>();
-
-    for(int i=0; i<productAndQuantity.length ; i++) {
+    for (int i = 0; i < productAndQuantity.length; i++) {
       productCards.add(ProductCardCartPage(
-        containerheight: size.maxHeight * 0.14,
+        containerheight: maxHeight * 0.14,
         quantity: productAndQuantity[i].quantity,
         product: productAndQuantity[i].product,
-      )
-    );
+      ));
     }
-    
+
     return ListView(children: productCards);
   }
 
   Widget _buildPriceBreakdown({
-    @required double total,
-    @required double subTotal, 
-    @required double shippingFee, 
-    @required double tax}) {
+    @required double maxWidth,
+    @required double maxHeight,
+    @required double subTotal,
+    @required Cart cart,
+  }) {
     return Container(
-      width: size.maxWidth,
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.only(top: 8),
-      decoration:BoxDecoration(
-        boxShadow: [BoxShadow()],
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          _buildAPriceRow("Sub Total", subTotal),
-          _buildAPriceRow("Shipping Fee", shippingFee),
-          _buildAPriceRow("Estimation Tax", tax),
-          SizedBox(height: 15),
-          Divider(color: Colors.grey, thickness: 2,),
-          SizedBox(height: 10),
-          _buildAPriceRow("Total", total),
-          SizedBox(height: 10),
-          Align(alignment: Alignment.bottomCenter, child: GradientColoredLongActionButton(text: "CHECKOUT", onPressed: () => Navigator.of(ctx).pushReplacementNamed(CheckoutPage.routeName), height: size.maxHeight * 0.07, width: size.maxWidth * HomePage.screenWidthMultiplier))
-        ],
-      )
-    );
+        width: maxWidth,
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.only(top: 8),
+        decoration: BoxDecoration(
+          boxShadow: [BoxShadow()],
+          color: Colors.white,
+        ),
+        child: Column(
+          children: [
+            Divider(
+              color: Colors.grey,
+              thickness: 2,
+            ),
+            _buildAPriceRow("Subtotal", subTotal),
+            Divider(
+              color: Colors.grey,
+              thickness: 2,
+            ),
+            SizedBox(height: 10),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: GradientColoredLongActionButton(
+                    text: "CHECKOUT",
+                    onPressed: () => cart.totalNumberOfProducts == 0
+                        ? () {
+                            ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+                              backgroundColor:
+                                  PGSK.accentColor.withOpacity(0.6),
+                              content: Text("Cart is empty",
+                                  style: Theme.of(ctx)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(color: Colors.white)),
+                            ));
+                          }
+                        : Navigator.of(ctx)
+                            .pushReplacementNamed(CheckoutPage.routeName),
+                    height: maxHeight * 0.07,
+                    width: maxWidth * HomePage.screenWidthMultiplier))
+          ],
+        ));
   }
 
   Widget _buildAPriceRow(String title, double price) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      textBaseline: TextBaseline.alphabetic,
       children: [
-        SizedBox(width: size.maxWidth * 0.4, child: Text(title, style: Theme.of(ctx).textTheme.caption.copyWith(fontSize: 11)),),
-        Expanded(child: Text(":", style: Theme.of(ctx).textTheme.caption)),
-        SizedBox(width: size.maxWidth * 0.4, child: Text("${PGSK.currency}${price.toString()}\n", style: Theme.of(ctx).textTheme.caption))
+        Text(title,
+            style: Theme.of(ctx).textTheme.caption.copyWith(fontSize: 11)),
+        Expanded(
+            child: Center(
+                child: Text(":", style: Theme.of(ctx).textTheme.caption))),
+        Text("${PGSK.currency}${price.toString()}\n",
+            style: Theme.of(ctx).textTheme.caption)
       ],
     );
   }
@@ -77,22 +103,28 @@ class CartPage extends StatelessWidget {
   ///if width is non-null, then buildCartTabView is to be rendered as a full page.
   ///else, its width is determined by the parent widget, which is explore_screen
   ///@Total is = subTotal, which is just the total sum of all products in cart
-  Widget _buildCartTabView(List<ProductAndQuantity> products, {@required double total, double width}) {
-    return Column(
-      children: [
-        Center(child: SizedBox(
-          height: size != null ? size.maxHeight * 0.4 : null,
-          width: width != null ? width : size.maxWidth * HomePage.screenWidthMultiplier,
-          child: _buildCartItems(products))),
-        Expanded(
-          child: _buildPriceBreakdown(
-            subTotal: total,
-            shippingFee: 9.90,
-            tax: 6.50,
-            total: 185.40
+  Widget _buildCartTabView(List<ProductAndQuantity> products,
+      {@required double subTotal,
+      @required Cart cart,
+      @required double maxHeight,
+      @required double maxWidth}) {
+    return SizedBox(
+      height: maxHeight,
+      child: Column(
+        children: [
+          Expanded(
+            child: SizedBox(
+                height: maxHeight * 0.4,
+                width: maxWidth * HomePage.screenWidthMultiplier,
+                child: _buildCartItems(products, maxHeight: maxHeight)),
           ),
-        )
-      ],
+          _buildPriceBreakdown(
+              cart: cart,
+              subTotal: subTotal,
+              maxHeight: maxHeight,
+              maxWidth: maxWidth)
+        ],
+      ),
     );
   }
 
@@ -102,32 +134,51 @@ class CartPage extends StatelessWidget {
     ctx = context;
     cartProvider.fetchMyCart();
 
-    //if size is null, then cart page should be rendered as a full page
-    if (size == null) {
-      return Scaffold(
-        body: LayoutBuilder(
-        builder: (ctx, constraints) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CustomAppBar(size: constraints, title: "Cart", trailing: SizedBox()),
-              _buildCartTabView(cartProvider.productsAndQuantity, 
-                total: cartProvider.total,
-                width: constraints.maxWidth * HomePage.screenWidthMultiplier)
-            ]
-          );
-        }
-        )
+    if (isFullPage)
+      return PGSK.buildFullPage(
+          child: LayoutBuilder(builder: (ctx, constraints) {
+        return SizedBox(
+          height: constraints.maxHeight,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomAppBar(
+                  size: constraints,
+                  title: "Cart",
+                  centerTitle: "Cart",
+                  leading: GestureDetector(
+                    child:
+                        Icon(Icons.arrow_back_ios_rounded, color: Colors.grey),
+                    onTap: () => Navigator.of(context).pop(),
+                  ),
+                  trailing: SizedBox(),
+                ),
+                Expanded(
+                  child: _buildCartTabView(
+                    cartProvider.productsAndQuantity,
+                    maxHeight: constraints.maxHeight,
+                    maxWidth: constraints.maxWidth,
+                    cart: cartProvider,
+                    subTotal: cartProvider.total,
+                  ),
+                )
+              ]),
+        );
+      }));
+    else
+      return LayoutBuilder(
+        builder: (_, constraints) => _buildCartTabView(
+            cartProvider.productsAndQuantity,
+            subTotal: cartProvider.total,
+            cart: cartProvider,
+            maxHeight: constraints.maxHeight,
+            maxWidth: constraints.maxWidth),
       );
-    }
-
-    return _buildCartTabView(cartProvider.productsAndQuantity, total: cartProvider.total);
   }
 }
 
 ///ProductAndQuantity encapsulates the quantity of a type of product to the quantity of it in the cart
 class ProductAndQuantity {
-
   ///quantity is the amount of this.product in the cart since there can be more than one this.product in the cart
   ///quantity is made an optional arg so that users of this class can either increment/decrement quantity directly
   ///or pass in a whole value for it
@@ -135,24 +186,25 @@ class ProductAndQuantity {
   final Product product;
 
   ProductAndQuantity(this.product, [int _quantity]) {
-    if(_quantity != null) quantity = _quantity;
+    if (_quantity != null) quantity = _quantity;
   }
 
-  ///from counts the quantity of a product type in products 
+  ///from counts the quantity of a product type in products
   ///to generate a ProductAndQuantity object for each product type and quantity.
   ///Products are differentiated by their product.name property.
   ///Note that @param products is modified in the method. Therefore it is recommended to pass in a copy
   ///of the actual products list using List<>.from() constructor
   static List<ProductAndQuantity> from({@required List<Product> products}) {
-    List<ProductAndQuantity> productsAndQuantities = List<ProductAndQuantity>();
+    List<ProductAndQuantity> productsAndQuantities = [];
     int length = products.length;
     Product product;
 
-    while(length != 0) {
+    while (length != 0) {
       product = products.first;
       final int initialLength = products.length;
       //removes all occurrences of product.name
-      products.removeWhere( (otherProduct) => otherProduct.name.compareTo(product.name) == 0);
+      products.removeWhere(
+          (otherProduct) => otherProduct.name.compareTo(product.name) == 0);
       final int truncatedLength = products.length;
       length = truncatedLength;
       final int quantity = initialLength - truncatedLength;

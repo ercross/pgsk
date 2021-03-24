@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'product_review.dart';
 
 class Product extends Equatable {
-  final String id;
+  final int id;
   final String name;
   final String categoryName;
   final double price;

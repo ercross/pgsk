@@ -1,16 +1,13 @@
 flutter_native_splash:
 
-  # Customize the parameters below, and run the following command in the terminal:
-  # flutter pub run flutter_native_splash:create
-  # To restore Flutter's default white splash screen, run the following command in the terminal:
-  # flutter pub run flutter_native_splash:remove
+  # run 'flutter pub run flutter_native_splash:create' to create the splash screen
+  # To restore Flutter's default white splash screen, run 'flutter pub run flutter_native_splash:remove'
 
-  # background color of your splash screen.
+  # background color of splash screen.
   color: "#EC2D23"
   image: assets/images/splash_screen_background.png
-
   android: true
-  ios: false
+  ios: true
 
   # The position of the splash image can be set with android_gravity and ios_content_mode 
   # parameters.  Both default to center.
@@ -25,7 +22,7 @@ flutter_native_splash:
   # https://developer.apple.com/documentation/uikit/uiview/contentmode): scaleToFill, 
   # scaleAspectFit, scaleAspectFill, center, top, bottom, left, right, topLeft, topRight, 
   # bottomLeft, or bottomRight.
-  #ios_content_mode: center
+  ios_content_mode: scaleToFill
 
   # To hide the notification bar, use the fullscreen parameter.  Defaults to false.
   # NOTE: Unlike Android, iOS will not automatically show the notification bar when the app loads.

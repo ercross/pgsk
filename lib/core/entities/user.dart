@@ -4,11 +4,11 @@ import 'package:meta/meta.dart';
 class UserInfo extends Equatable {
 
   ///id is provided by PGSK web server after registration attempt
-  final String id;
+  final int id;
   final String email;
   final String firstName;
   final String lastName;
-  final int phoneNumber;
+  final String phoneNumber;
 
   ///isCustomers is true if user has previously purchased a product on PGSK platform
   final bool isCustomer;

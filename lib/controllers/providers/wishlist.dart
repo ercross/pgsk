@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pgsk/core/repositories/services_repository/e_commerce_services_repository.dart';
+import '../../core/repositories/services_repository/e_commerce_services_repository.dart';
 
 import '../../core/entities/product.dart';
 
 class Wishlist with ChangeNotifier {
-
   final ECommerceServicesRepository repository;
-  
+
   Wishlist(this.repository);
 
   Set<Product> _products = Set<Product>();

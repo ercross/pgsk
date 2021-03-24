@@ -9,7 +9,7 @@ enum OrderStatus {
 }
 
 class Order extends Equatable {
-  final String id;
+  final int id;
   final DateTime createdAt;
   final DateTime settledAt;
   ///totalAmount includes 

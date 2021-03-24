@@ -11,11 +11,10 @@ class TVDisplay extends StatefulWidget {
   final double allowedHeight;
   final double allowedWidth;
 
-  const TVDisplay({
-    @required this.imageRepository,
-    @required this.allowedHeight,
-    @required this.allowedWidth
-  });
+  const TVDisplay(
+      {@required this.imageRepository,
+      @required this.allowedHeight,
+      @required this.allowedWidth});
 
   @override
   _TVDisplayState createState() => _TVDisplayState();
@@ -47,12 +46,13 @@ class _TVDisplayState extends State<TVDisplay> {
   @override
   void initState() {
     super.initState();
-    widget.imageRepository.fetchFromUrls(
-      imagesUrls: Constants.homepageTVImagesUrls,
-      displayHeight: HomePage.deviceHeight * 0.22, 
-      displayWidth: HomePage.deviceWidth * HomePage.screenWidthMultiplier)
+    widget.imageRepository
+        .fetchFromUrls(
+            imagesUrls: Constants.homepageTVImagesUrls,
+            displayHeight: HomePage.deviceHeight * 0.22,
+            displayWidth: HomePage.deviceWidth * HomePage.screenWidthMultiplier)
         .then((fetchedImages) => setState(() => _images = fetchedImages))
-        .catchError((error) => setState(() => _images = List<Image>()));
+        .catchError((error) => setState(() => _images = []));
   }
 
   @override
@@ -66,9 +66,8 @@ class _TVDisplayState extends State<TVDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    
-    if (_images == null || _images.isEmpty) return SizedBox();
-
+    if (_images == null || _images.isEmpty)
+      return SizedBox();
     else if (_isTimerStarted == false) {
       _startTimer();
       _isTimerStarted = true;
@@ -96,37 +95,32 @@ class _TVDisplayState extends State<TVDisplay> {
 
   Widget _buildSwipeDetector({@required Widget onChild}) {
     return GestureDetector(
-      onHorizontalDragUpdate: (dragDetails) {
-        if (dragDetails.delta.dx > 0) {
-          
-          if (_currentlyActiveIndicator == _images.length - 1)
-            setState(() {
-              _currentlyActiveIndicator = 0;
-              _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
-            });
-          else
-            setState(() {
-              _currentlyActiveIndicator++;
-              _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
-            });
-
-        }
-        else if (dragDetails.delta.dx < 0) {
-
-          if (_currentlyActiveIndicator == 0)
-            setState(() {
-              _currentlyActiveIndicator = _images.length - 1;
-              _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
-            });
-          else
-            setState(() {
-              _currentlyActiveIndicator--;
-              _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
-            });
-
-        }
-      },
-      child: onChild);
+        onHorizontalDragUpdate: (dragDetails) {
+          if (dragDetails.delta.dx > 0) {
+            if (_currentlyActiveIndicator == _images.length - 1)
+              setState(() {
+                _currentlyActiveIndicator = 0;
+                _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
+              });
+            else
+              setState(() {
+                _currentlyActiveIndicator++;
+                _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
+              });
+          } else if (dragDetails.delta.dx < 0) {
+            if (_currentlyActiveIndicator == 0)
+              setState(() {
+                _currentlyActiveIndicator = _images.length - 1;
+                _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
+              });
+            else
+              setState(() {
+                _currentlyActiveIndicator--;
+                _currentlyDisplayedImage = _images[_currentlyActiveIndicator];
+              });
+          }
+        },
+        child: onChild);
   }
 
   Widget _buildIndicatorsButtonBar() {
@@ -139,7 +133,7 @@ class _TVDisplayState extends State<TVDisplay> {
   }
 
   List<Widget> _buildIndicatorBars() {
-    List<Widget> indicatorBars = List<Widget>();
+    List<Widget> indicatorBars = [];
 
     for (int i = 0; i < _images.length; i++) {
       indicatorBars.add(_buildIndicatorBar(_currentlyActiveIndicator == i));

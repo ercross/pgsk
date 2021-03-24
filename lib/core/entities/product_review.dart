@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 class ProductReview extends Equatable {
-  final String id;
+  final int id;
   final String review;
   final int starRating;
   final int productId;

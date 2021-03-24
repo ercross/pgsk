@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pgsk/views/screens/dynamic_products_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/cubits/image_cubit/image_cubit.dart';
@@ -30,26 +34,34 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<Cart>(create: (_) => Cart(ECommerceServicesRepositoryImpl()),),
-        ChangeNotifierProvider<BottomNavBarActiveIcon>(create: (_) => BottomNavBarActiveIcon()),
-        ChangeNotifierProvider<PaymentData>(create: (_) => PaymentData()),
-        ChangeNotifierProvider<CheckoutProgress>(create: (_) => CheckoutProgress()),
-        ChangeNotifierProvider<Wishlist>(create: (_) => Wishlist(ECommerceServicesRepositoryImpl()),),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<ImageCubit>(create: (_) => ImageCubit(ImageRepositoryImpl()),)
-        ],
-        child: PGSK()),
-    ));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<Cart>(
+        create: (_) => Cart(ECommerceServicesRepositoryImpl()),
+      ),
+      ChangeNotifierProvider<BottomNavBarActiveIcon>(
+          create: (_) => BottomNavBarActiveIcon()),
+      ChangeNotifierProvider<PaymentData>(create: (_) => PaymentData()),
+      ChangeNotifierProvider<CheckoutProgress>(
+          create: (_) => CheckoutProgress()),
+      ChangeNotifierProvider<Wishlist>(
+        create: (_) => Wishlist(ECommerceServicesRepositoryImpl()),
+      ),
+    ],
+    child: MultiBlocProvider(providers: [
+      BlocProvider<ImageCubit>(
+        create: (_) => ImageCubit(ImageRepositoryImpl()),
+      )
+    ], child: PGSK()),
+  ));
 }
 
 class PGSK extends StatelessWidget {
   static const String primaryFont = 'Montserrat';
   static const String currency = "\$";
+  static const Color primaryColorGradient1 = Color(0xFFEC5F23);
+  static const Color primaryColorGradient2 = Color(0xFFEC2123);
+  static const Color accentColor = Color(0xFFEC2D23);
 
   static const TextStyle homepageTexts = TextStyle(
     color: Colors.black,
@@ -59,42 +71,100 @@ class PGSK extends StatelessWidget {
     wordSpacing: 0.5,
   );
 
-  @override
-  Widget build(BuildContext context) {
+  static final bool isIos = Platform.isIOS;
 
-    return MaterialApp(
-      title: 'PGSK',
-      theme: cookTheme(),
-      home: GestureDetector(
-        onTap: () =>
-            WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-        child: SafeArea(child: SecondarySplashScreen())),
-      ),
-      routes: {
-        CheckoutSuccessPage.routeName: (_) => CheckoutSuccessPage(),
-        CheckoutPage.routeName: (_) => CheckoutPage(),
-        UserAccountPage.routeName: (_) => UserAccountPage(),
-        SearchPage.routeName: (_) => SearchPage(),
-        ExplorePage.routeName: (_) => ExplorePage(),
-        CategoryPage.routeName: (_) => CategoryPage(EntitiesRepositoryImpl()),
-        GettingStartedPage.routeName: (_) => GettingStartedPage(),
-        OnpageLoadingSpinner.routeName: (_) => OnpageLoadingSpinner(),
-        HomePage.routeName: (_) => HomePage(),
-        SecondarySplashScreen.routeName: (_) => SecondarySplashScreen(),
-        OnboardingPage.routeName: (_) => OnboardingPage(),
-        AuthenticationPage.routeName: (_) => AuthenticationPage(),
-      },
+  final Map<String, Widget Function(BuildContext)> _routes = {
+    CheckoutSuccessPage.routeName: (_) => CheckoutSuccessPage(),
+    CheckoutPage.routeName: (_) => CheckoutPage(),
+    UserAccountPage.routeName: (_) => UserAccountPage(),
+    SearchPage.routeName: (_) => SearchPage(),
+    ExplorePage.routeName: (_) => ExplorePage(),
+    CategoryPage.routeName: (_) => CategoryPage(EntitiesRepositoryImpl()),
+    GettingStartedPage.routeName: (_) => GettingStartedPage(),
+    OnpageLoadingSpinner.routeName: (_) => OnpageLoadingSpinner(),
+    HomePage.routeName: (_) => HomePage(),
+    SecondarySplashScreen.routeName: (_) => SecondarySplashScreen(),
+    OnboardingPage.routeName: (_) => OnboardingPage(),
+    AuthenticationPage.routeName: (_) => AuthenticationPage(),
+    DynamicProductsPage.routeName: (_) => DynamicProductsPage(),
+  };
+
+  final String title = 'PGSK Technologies';
+
+  static Widget buildFullPage({@required Widget child}) => PGSK.isIos
+      ? CupertinoPageScaffold(child: SafeArea(child: child))
+      : Scaffold(body: child);
+
+  final Widget home = GestureDetector(
+    onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
+    child: HomePage(),
+  );
+
+  Widget _buildForAndroid() => MaterialApp(
+        title: title,
+        theme: cookAndroidTheme(),
+        home: home,
+        routes: _routes,
+      );
+
+  Widget _buildForIos() => CupertinoApp(
+        title: title,
+        theme: cookIosTheme(),
+        home: home,
+        routes: _routes,
+      );
+
+  @override
+  Widget build(BuildContext context) =>
+      isIos ? _buildForIos() : _buildForAndroid();
+
+  CupertinoThemeData cookIosTheme() {
+    final CupertinoTextThemeData textTheme = CupertinoTextThemeData(
+        primaryColor: accentColor,
+        tabLabelTextStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: primaryFont,
+            fontSize: 14,
+            fontWeight: FontWeight.w700),
+        navActionTextStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: primaryFont,
+            fontSize: 12,
+            fontWeight: FontWeight.w700),
+        navLargeTitleTextStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: primaryFont,
+            fontSize: 20,
+            fontWeight: FontWeight.w600),
+        navTitleTextStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: primaryFont,
+            fontSize: 16,
+            fontWeight: FontWeight.w700),
+        actionTextStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: primaryFont,
+            fontSize: 13,
+            fontWeight: FontWeight.w600),
+        textStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: primaryFont,
+            fontSize: 13,
+            fontWeight: FontWeight.w600));
+
+    return CupertinoThemeData(
+      primaryColor: primaryColorGradient1,
+      primaryContrastingColor: accentColor,
+      scaffoldBackgroundColor: accentColor.withOpacity(0.4),
+      textTheme: textTheme,
     );
   }
 
   ///cookTheme prepares PGSK theme
   ///This method was prepared to avoid the problem described below.
   ///The context passed in PGSK().build(context) contains Flutter default theme
-  ///This method was extracted out to override this by avoid call to Theme.of(context) in the method
-  ThemeData cookTheme() {
-    const Color primaryColorGradient1 = Color(0xFFEC5F23);
-    const Color primaryColorGradient2 = Color(0xFFEC2123);
-    const Color accentColor = Color(0xFFEC2D23);
+  ///This method was extracted out to override this by avoiding call to Theme.of(context) in the method
+  ThemeData cookAndroidTheme() {
     const Color black = Colors.black;
     const Color grey = Colors.grey;
     const Color white = Colors.white;
@@ -121,6 +191,7 @@ class PGSK extends StatelessWidget {
               fontWeight: FontWeight.w600),
           bodyText1: TextStyle(
               color: white,
+              fontSize: 14,
               fontFamily: primaryFont,
               fontWeight: FontWeight.w600),
           subtitle2: TextStyle(
