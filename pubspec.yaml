@@ -29,6 +29,7 @@ dependencies:
   #flutter_secure_storage stores data in SharedPreferences but with encryption in android. 
   #So it can store data that sharedPreferences can store
   flutter_secure_storage: ^3.3.5 
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
